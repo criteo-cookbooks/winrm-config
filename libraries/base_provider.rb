@@ -23,7 +23,13 @@ require 'rexml/document'
 module WinrmConfig
   module BaseProvider
 
-    def winrm_config(path, config = nil)
+    def winrm_delete(path)
+      wsman = WIN32OLE.new('WSMAN.Automation')
+      session = wsman.CreateSession
+      session.Delete wsman.CreateResourceLocator("winrm/#{path}")
+    end
+
+    def winrm_config(path, config = nil, write_action = :Put)
       wsman = WIN32OLE.new('WSMAN.Automation')
       session = wsman.CreateSession
       locator = wsman.CreateResourceLocator "winrm/#{path}"
@@ -34,9 +40,9 @@ module WinrmConfig
       else
         doc = REXML::Document.new
         hash_to_xml(config, doc)
-        doc.root.add_namespace('cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path}")
+        doc.root.add_namespace('cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path.split('?').first}")
         doc.root.add_attribute('xml:lang', 'en-US')
-        session.Put locator, doc.to_s
+        session.send write_action, locator, doc.to_s
       end
     end
 
