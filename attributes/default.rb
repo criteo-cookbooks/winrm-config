@@ -20,75 +20,61 @@
 
 return unless platform? 'windows'
 
-default['winrm_config']['client'] = {
-  'AllowUnencrypted' =>                            false,
-  'Auth' => {
-    'Basic' =>                                     true,
-    'Digest' =>                                    true,
-    'Kerberos' =>                                  true,
-    'Negotiate' =>                                 true,
-    'Certificate' =>                               true,
-    'CredSSP' =>                                   false,
-  },
-  'DefaultPorts' => {
-    'HTTP' =>                                      5985,
-    'HTTPS' =>                                     5986,
-  },
-  'NetworkDelayms' =>                              5000,
-  'URLPrefix' =>                                   'wsman',
-  'TrustedHosts' =>                                '',
-}
+client_conf = default['winrm_config']['client']
+client_conf['AllowUnencrypted'] =                  false
+client_conf['Auth']['Basic'] =                     true
+client_conf['Auth']['Digest'] =                    true
+client_conf['Auth']['Kerberos'] =                  true
+client_conf['Auth']['Negotiate'] =                 true
+client_conf['Auth']['Certificate'] =               true
+client_conf['Auth']['CredSSP'] =                   false
+client_conf['DefaultPorts']['HTTP'] =              5985
+client_conf['DefaultPorts']['HTTPS'] =             5986
+client_conf['NetworkDelayms'] =                    5000
+client_conf['URLPrefix'] =                         'wsman'
+client_conf['TrustedHosts'] =                      ''
 
 
 sddl = 'O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;ER)S:P(AU;FA;GA;;;WD)(AU;SA;GWGX;;;WD)'
-default['winrm_config']['service'] = {
- 'AllowUnencrypted' =>                             false,
- 'Auth' => {
-    'Basic' =>                                     true,
-    'Kerberos' =>                                  true,
-    'Negotiate' =>                                 true,
-    'Certificate' =>                               true,
-    'CredSSP' =>                                   false,
-    'CbtHardeningLevel' =>                         'Relaxed',
-  },
- 'DefaultPorts' => {
-    'HTTP' =>                                      5985,
-    'HTTPS' =>                                     5986,
-  },
- 'EnableCompatibilityHttpListener' =>              false,
- 'EnableCompatibilityHttpsListener' =>             false,
- 'EnumerationTimeoutms' =>                         60000,
- 'IPv4Filter' =>                                   '*',
- 'IPv6Filter' =>                                   '*',
- 'MaxConcurrentOperationsPerUser' =>               1500,
- 'MaxConnections' =>                               25,
- 'MaxPacketRetrievalTimeSeconds' =>                120,
- 'RootSDDL' =>                                     sddl,
-}
+service_conf = default['winrm_config']['service']
+service_conf['AllowUnencrypted'] =                 false
+service_conf['Auth']['Basic'] =                    true
+service_conf['Auth']['Kerberos'] =                 true
+service_conf['Auth']['Negotiate'] =                true
+service_conf['Auth']['Certificate'] =              true
+service_conf['Auth']['CredSSP'] =                  false
+service_conf['Auth']['CbtHardeningLevel'] =        'Relaxed'
+service_conf['DefaultPorts']['HTTP'] =             5985
+service_conf['DefaultPorts']['HTTPS'] =            5986
+service_conf['EnableCompatibilityHttpListener'] =  false
+service_conf['EnableCompatibilityHttpsListener'] = false
+service_conf['EnumerationTimeoutms'] =             60000
+service_conf['IPv4Filter'] =                       '*'
+service_conf['IPv6Filter'] =                       '*'
+service_conf['MaxConcurrentOperationsPerUser'] =   1500
+service_conf['MaxConnections'] =                   25
+service_conf['MaxPacketRetrievalTimeSeconds'] =    120
+service_conf['RootSDDL'] =                         sddl
 
-default['winrm_config']['winrs'] = {
-  'AllowRemoteShellAccess' =>                      true,
-  'IdleTimeout' =>                                 180000,
-  'MaxConcurrentUsers' =>                          5,
-  'MaxMemoryPerShellMB' =>                         150,
-  'MaxProcessesPerShell' =>                        15,
-  'MaxShellsPerUser' =>                            5,
-}
+winrs_conf = default['winrm_config']['winrs']
+winrs_conf['AllowRemoteShellAccess'] =             true
+winrs_conf['IdleTimeout'] =                        180000
+winrs_conf['MaxConcurrentUsers'] =                 5
+winrs_conf['MaxMemoryPerShellMB'] =                150
+winrs_conf['MaxProcessesPerShell'] =               15
+winrs_conf['MaxShellsPerUser'] =                   5
 
-default['winrm_config']['protocol'] = {
-  'MaxEnvelopeSizekb' =>                           150,
-  'MaxTimeoutms' =>                                60000,
-  'MaxBatchItems' =>                               32000,
-}
 
-default['winrm_config']['listeners'] = {
-  'HTTP' => {
-    'Address' =>                                   '*',
-    'CertificateThumbprint' =>                     nil,
-    'Enabled' =>                                   true,
-    'Hostname' =>                                  nil,
-    'Port' =>                                      5985,
-    'Transport' =>                                 'HTTP',
-    'URLPrefix' =>                                 'wsman',
-    },
-}
+protocol_conf = default['winrm_config']['protocol']
+protocol_conf['MaxEnvelopeSizekb'] =               150
+protocol_conf['MaxTimeoutms'] =                    60000
+protocol_conf['MaxBatchItems'] =                   32000
+
+listeners = default['winrm_config']['listeners']
+listeners['HTTP']['Address'] =                     '*'
+listeners['HTTP']['CertificateThumbprint'] =       nil
+listeners['HTTP']['Enabled'] =                     true
+listeners['HTTP']['Hostname'] =                    nil
+listeners['HTTP']['Port'] =                        5985
+listeners['HTTP']['Transport'] =                   'HTTP'
+listeners['HTTP']['URLPrefix'] =                   'wsman'
