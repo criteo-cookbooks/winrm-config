@@ -19,7 +19,7 @@
 #
 use_inline_resources
 
-include WinrmConfig::BaseProvider
+include WinrmConfig::ProviderHelper
 
 def load_current_resource
   @current_resource = Chef::Resource::WinrmConfigListener.new(new_resource.name, @run_context)

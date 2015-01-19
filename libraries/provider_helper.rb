@@ -1,7 +1,7 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
 # Cookbook Name:: winrm-config
-# Library:: base_provider
+# Library:: provider_helper
 #
 # Copyright:: Copyright (c) 2015 Criteo.
 #
@@ -21,7 +21,7 @@ require 'win32ole' if RUBY_PLATFORM =~ /mswin|mingw32|windows/
 require 'rexml/document'
 
 module WinrmConfig
-  module BaseProvider
+  module ProviderHelper
 
     def winrm_delete(path)
       wsman = WIN32OLE.new('WSMAN.Automation')
