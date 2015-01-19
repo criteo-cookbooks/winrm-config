@@ -40,4 +40,4 @@ limitations under the License.
 ```
 
 [author]:                   https://github.com/Annih
-[repository]:               https://github.com/criteo-cookbooks/winrm-server
+[repository]:               https://github.com/criteo-cookbooks/winrm-config

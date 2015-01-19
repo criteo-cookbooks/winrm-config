@@ -1,4 +1,4 @@
-name             'winrm-server'
+name             'winrm-config'
 maintainer       'Criteo'
 maintainer_email 'b.courtois@criteo.com'
 license          'Apache 2.0'
