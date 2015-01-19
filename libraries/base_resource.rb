@@ -18,7 +18,11 @@
 # limitations under the License.
 #
 module WinrmConfig
+  # Module to extend Chef Resources with helpers and properties' Hash table
+  # It's used by all `winrm-config` resources.
   module BaseResource
+    MAX_INT16 = 65_535
+    MAX_INT32 = 2_147_483_647
 
     def initialize(name, run_context = nil)
       super(name, run_context)
@@ -26,10 +30,10 @@ module WinrmConfig
       @action = :configure
       @allowed_actions.push(:configure)
 
-      @properties = { }
+      @properties = {}
     end
 
-    def properties(arg=nil)
+    def properties(arg = nil)
       if arg
         @properties = arg.merge(@properties)
       end
@@ -39,14 +43,14 @@ module WinrmConfig
     def validate_string(name, value, values)
       value = value.to_s
       unless values.include? value
-        raise RangeError, "Invalid value for '#{name}', accepted values are '#{values.join('\', \'')}'"
+        fail RangeError, "Invalid value for '#{name}', accepted values are '#{values.join('\', \'')}'"
       end
       value
     end
 
     def boolean_to_s(name, value)
       unless value.is_a?(TrueClass) || value.is_a?(FalseClass)
-        raise TypeError, "Invalid value for '#{name}' expecting 'True' or 'False'"
+        fail TypeError, "Invalid value for '#{name}' expecting 'True' or 'False'"
       end
       value.to_s
     end
@@ -54,7 +58,7 @@ module WinrmConfig
     def integer_to_s(name, value, min, max)
       i = value.to_i
       unless i >= min && i <= max && value.to_s =~ /^\d+$/
-        raise ArgumentError, "Invalid value for '#{name}', value must be between #{min} and #{max}"
+        fail ArgumentError, "Invalid value for '#{name}', value must be between #{min} and #{max}"
       end
       i.to_s
     end

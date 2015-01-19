@@ -30,8 +30,8 @@ def load_current_resource
 end
 
 action :configure do
-  if has_changes? current_resource.properties, new_resource.properties
-    converge_by "configuring WinRM winrs" do
+  if changes? current_resource.properties, new_resource.properties
+    converge_by 'configuring WinRM winrs' do
       winrm_config 'config/winrs', get_final_config('Winrs')
     end
     new_resource.updated_by_last_action true

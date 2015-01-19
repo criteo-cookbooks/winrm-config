@@ -34,7 +34,6 @@ client_conf['NetworkDelayms'] =                    5000
 client_conf['URLPrefix'] =                         'wsman'
 client_conf['TrustedHosts'] =                      ''
 
-
 sddl = 'O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;ER)S:P(AU;FA;GA;;;WD)(AU;SA;GWGX;;;WD)'
 service_conf = default['winrm_config']['service']
 service_conf['AllowUnencrypted'] =                 false
@@ -48,7 +47,7 @@ service_conf['DefaultPorts']['HTTP'] =             5985
 service_conf['DefaultPorts']['HTTPS'] =            5986
 service_conf['EnableCompatibilityHttpListener'] =  false
 service_conf['EnableCompatibilityHttpsListener'] = false
-service_conf['EnumerationTimeoutms'] =             60000
+service_conf['EnumerationTimeoutms'] =             60_000
 service_conf['IPv4Filter'] =                       '*'
 service_conf['IPv6Filter'] =                       '*'
 service_conf['MaxConcurrentOperationsPerUser'] =   1500
@@ -58,17 +57,16 @@ service_conf['RootSDDL'] =                         sddl
 
 winrs_conf = default['winrm_config']['winrs']
 winrs_conf['AllowRemoteShellAccess'] =             true
-winrs_conf['IdleTimeout'] =                        180000
+winrs_conf['IdleTimeout'] =                        180_000
 winrs_conf['MaxConcurrentUsers'] =                 5
 winrs_conf['MaxMemoryPerShellMB'] =                150
 winrs_conf['MaxProcessesPerShell'] =               15
 winrs_conf['MaxShellsPerUser'] =                   5
 
-
 protocol_conf = default['winrm_config']['protocol']
 protocol_conf['MaxEnvelopeSizekb'] =               150
-protocol_conf['MaxTimeoutms'] =                    60000
-protocol_conf['MaxBatchItems'] =                   32000
+protocol_conf['MaxTimeoutms'] =                    60_000
+protocol_conf['MaxBatchItems'] =                   32_000
 
 listeners = default['winrm_config']['listeners']
 listeners['HTTP']['Address'] =                     '*'

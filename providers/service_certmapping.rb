@@ -31,7 +31,7 @@ end
 
 action :configure do
   pwd = new_resource.properties.delete 'Password' # We can't check the Password
-  if has_changes? current_resource.properties, new_resource.properties
+  if changes? current_resource.properties, new_resource.properties
     new_resource.password pwd
     converge_by 'configuring WinRM service certificate mapping' do
       action = current_resource.properties.empty? ? :Create : :Put

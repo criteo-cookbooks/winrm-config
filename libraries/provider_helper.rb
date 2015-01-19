@@ -21,8 +21,9 @@ require 'win32ole' if RUBY_PLATFORM =~ /mswin|mingw32|windows/
 require 'rexml/document'
 
 module WinrmConfig
+  # Helper module to communicate with WSMAN and handle winrm properties
+  # It's used by all `winrm-config` providers.
   module ProviderHelper
-
     def winrm_delete(path)
       wsman = WIN32OLE.new('WSMAN.Automation')
       session = wsman.CreateSession
@@ -36,21 +37,21 @@ module WinrmConfig
 
       if config.nil?
         xml = session.Get locator
-        xml_to_hash(REXML::Document.new(xml).root)
+        xml_to_hash REXML::Document.new(xml).root
       else
         doc = REXML::Document.new
-        hash_to_xml(config, doc)
-        doc.root.add_namespace('cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path.split('?').first}")
-        doc.root.add_attribute('xml:lang', 'en-US')
+        hash_to_xml config, doc
+        doc.root.add_namespace 'cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path.split('?').first}"
+        doc.root.add_attribute 'xml:lang', 'en-US'
         session.send write_action, locator, doc.to_s
       end
     end
 
-    def has_changes?(current_hash, new_hash)
-      new_hash.any? do |key,value|
-        if current_hash.has_key? key
+    def changes?(current_hash, new_hash)
+      new_hash.any? do |key, value|
+        if current_hash.key? key
           if value.is_a? Hash
-            has_changes? current_hash[key], value
+            changes? current_hash[key], value
           else
             value != current_hash[key]
           end
@@ -60,7 +61,6 @@ module WinrmConfig
       end
     end
 
-
     def get_final_config(root)
       { root => deep_merge(current_resource.properties, new_resource.properties) }
     end
@@ -68,7 +68,7 @@ module WinrmConfig
     protected
 
     def deep_merge(h1, h2)
-      h1.merge(h2) do |key, old_value, new_value|
+      h1.merge(h2) do |_, old_value, new_value|
         if old_value.is_a?(Hash) && new_value.is_a?(Hash)
           deep_merge old_value, new_value
         else
@@ -80,22 +80,22 @@ module WinrmConfig
     private
 
     def hash_to_xml(hash, parent = nil)
-      hash.map do |k,v|
-        element = REXML::Element.new("cfg:#{k}", parent)
+      hash.map do |key, value|
+        element = REXML::Element.new("cfg:#{key}", parent)
 
-        if v.is_a? Hash
-          hash_to_xml(v, element)
+        if value.is_a? Hash
+          hash_to_xml(value, element)
         else
-          element.text = v.to_s
+          element.text = value.to_s
         end
       end
     end
 
-    def xml_to_hash(node)
-      if node.has_elements?
-        { node.name => {}.tap { |h| node.elements.each { |e| h.merge!(xml_to_hash e) } } }
+    def xml_to_hash(xnode)
+      if xnode.has_elements?
+        { xnode.name => {}.tap { |h| xnode.elements.each { |e| h.merge!(xml_to_hash e) } } }
       else
-        { node.name => node.texts.first.to_s }
+        { xnode.name => xnode.texts.first.to_s }
       end
     end
   end

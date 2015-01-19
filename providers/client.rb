@@ -24,14 +24,13 @@ include WinrmConfig::ProviderHelper
 def load_current_resource
   @current_resource = Chef::Resource::WinrmConfigClient.new(new_resource.name, @run_context)
   @current_resource.properties winrm_config('config/client')['Client']
-
   Chef::Log.info('Current WinRM client config')
   Chef::Log.info(@current_resource.properties)
 end
 
 action :configure do
-  if has_changes? current_resource.properties, new_resource.properties
-    converge_by "configuring WinRM client" do
+  if changes? current_resource.properties, new_resource.properties
+    converge_by 'configuring WinRM client' do
       winrm_config 'config/client', get_final_config('Client')
     end
     new_resource.updated_by_last_action true

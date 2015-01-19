@@ -23,20 +23,19 @@ include WinrmConfig::BaseResourceSecurity
 
 default_action :configure
 
-
-def digest_auth(arg=nil)
+def digest_auth(arg = nil)
   enable_auth('Digest', arg)
 end
 
-def network_delay(arg=nil)
+def network_delay(arg = nil)
   if arg
-    @properties['NetworkDelayms'] = integer_to_s('network_delay', arg, 0, 2147483647)
+    @properties['NetworkDelayms'] = integer_to_s('network_delay', arg, 0, MAX_INT16)
   else
     @properties['NetworkDelayms']
   end
 end
 
-def url_prefix(arg=nil)
+def url_prefix(arg = nil)
   if arg
     @properties['URLPrefix'] = arg
   else
@@ -44,7 +43,7 @@ def url_prefix(arg=nil)
   end
 end
 
-def trusted_hosts(arg=nil)
+def trusted_hosts(arg = nil)
   if arg
     @properties['TrustedHosts'] = arg
   else

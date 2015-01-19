@@ -22,7 +22,7 @@ include WinrmConfig::BaseResource
 
 default_action :configure
 
-def enable(arg=nil)
+def enable(arg = nil)
   if arg
     @properties['AllowRemoteShellAccess'] = boolean_to_s('enable', arg)
   else
@@ -30,41 +30,41 @@ def enable(arg=nil)
   end
 end
 
-def concurrent_users(arg=nil)
+def concurrent_users(arg = nil)
   if arg
-    @properties['MaxConcurrentUsers'] = integer_to_s('concurrent_users', arg, 0, 2147483647)
+    @properties['MaxConcurrentUsers'] = integer_to_s('concurrent_users', arg, 0, MAX_INT32)
   else
     @properties['MaxConcurrentUsers']
   end
 end
 
-def idle_timeout(arg=nil)
+def idle_timeout(arg = nil)
   if arg
-    @properties['IdleTimeout'] = integer_to_s('idle_timeout', arg, 60000, 2147483647)
+    @properties['IdleTimeout'] = integer_to_s('idle_timeout', arg, 60_000, MAX_INT32)
   else
     @properties['IdleTimeout']
   end
 end
 
-def memory_per_shell(arg=nil)
+def memory_per_shell(arg = nil)
   if arg
-    @properties['MaxMemoryPerShellMB'] = integer_to_s('memory_per_shell', arg, 0, 2147483647)
+    @properties['MaxMemoryPerShellMB'] = integer_to_s('memory_per_shell', arg, 0, MAX_INT32)
   else
     @properties['MaxMemoryPerShellMB']
   end
 end
 
-def process_per_shell(arg=nil)
+def process_per_shell(arg = nil)
   if arg
-    @properties['MaxProcessesPerShell'] = integer_to_s('process_per_shell', arg, 0, 2147483647)
+    @properties['MaxProcessesPerShell'] = integer_to_s('process_per_shell', arg, 0, MAX_INT32)
   else
     @properties['MaxProcessesPerShell']
   end
 end
 
-def shell_per_user(arg=nil)
+def shell_per_user(arg = nil)
   if arg
-    @properties['MaxShellsPerUser'] = integer_to_s('shells_per_user', arg, 0, 2147483647)
+    @properties['MaxShellsPerUser'] = integer_to_s('shells_per_user', arg, 0, MAX_INT32)
   else
     @properties['MaxShellsPerUser']
   end

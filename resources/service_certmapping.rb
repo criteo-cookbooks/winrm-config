@@ -22,7 +22,7 @@ include WinrmConfig::BaseResource
 default_action :configure
 actions :configure, :delete
 
-def enable(arg=nil)
+def enable(arg = nil)
   if arg
     @properties['Enabled'] = boolean_to_s('enable', arg)
   else
@@ -30,7 +30,7 @@ def enable(arg=nil)
   end
 end
 
-def issuer(arg=nil)
+def issuer(arg = nil)
   if arg
     @properties['Issuer'] = arg
   else
@@ -38,7 +38,7 @@ def issuer(arg=nil)
   end
 end
 
-def subject(arg=nil)
+def subject(arg = nil)
   if arg
     @properties['Subject'] = arg
   else
@@ -46,7 +46,7 @@ def subject(arg=nil)
   end
 end
 
-def uri(arg=nil)
+def uri(arg = nil)
   if arg
     @properties['URI'] = arg
   else
@@ -54,7 +54,7 @@ def uri(arg=nil)
   end
 end
 
-def username(arg=nil)
+def username(arg = nil)
   if arg
     @properties['UserName'] = arg
   else
@@ -62,7 +62,7 @@ def username(arg=nil)
   end
 end
 
-def password(arg=nil)
+def password(arg = nil)
   if arg
     @properties['Password'] = arg
   else

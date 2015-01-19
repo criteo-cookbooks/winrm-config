@@ -22,9 +22,9 @@ include WinrmConfig::BaseResource
 default_action :configure
 actions :configure, :delete
 
-TRANSPORTS = ['HTTP', 'HTTPS']
+TRANSPORTS = %w(HTTP HTTPS)
 
-def address(arg=nil)
+def address(arg = nil)
   if arg
     @properties['Address'] = arg
   else
@@ -32,7 +32,7 @@ def address(arg=nil)
   end
 end
 
-def certificate_thumbprint(arg=nil)
+def certificate_thumbprint(arg = nil)
   if arg
     @properties['CertificateThumbprint'] = arg
   else
@@ -40,7 +40,7 @@ def certificate_thumbprint(arg=nil)
   end
 end
 
-def enable(arg=nil)
+def enable(arg = nil)
   if arg
     @properties['Enabled'] = boolean_to_s('enable', arg)
   else
@@ -48,7 +48,7 @@ def enable(arg=nil)
   end
 end
 
-def hostname(arg=nil)
+def hostname(arg = nil)
   if arg
     @properties['Hostname'] = arg
   else
@@ -56,15 +56,15 @@ def hostname(arg=nil)
   end
 end
 
-def port(arg=nil)
+def port(arg = nil)
   if arg
-    @properties['Port'] = integer_to_s('port', arg, 0, 65535)
+    @properties['Port'] = integer_to_s('port', arg, 0, MAX_INT16)
   else
     @properties['Port']
   end
 end
 
-def transport(arg=nil)
+def transport(arg = nil)
   if arg
     @properties['Transport'] = validate_string('transport', arg, TRANSPORTS)
   else
@@ -72,7 +72,7 @@ def transport(arg=nil)
   end
 end
 
-def url_prefix(arg=nil)
+def url_prefix(arg = nil)
   if arg
     @properties['URLPrefix'] = arg
   else

@@ -19,11 +19,13 @@
 #
 
 module WinrmConfig
+  # Module to extend Chef Resources with winrm security attributes.
+  # It's used by `client` & `service` winrm-config resources.
   module BaseResourceSecurity
 
     include ::WinrmConfig::BaseResource
 
-    def allow_unencrypted(arg=nil)
+    def allow_unencrypted(arg = nil)
       if arg
         @properties['AllowUnencrypted'] = boolean_to_s('allow_unencrypted', arg)
       else
@@ -31,46 +33,46 @@ module WinrmConfig
       end
     end
 
-    def http_port(arg=nil)
+    def http_port(arg = nil)
       default_port('HTTP', arg)
     end
 
-    def https_port(arg=nil)
+    def https_port(arg = nil)
       default_port('HTTPS', arg)
     end
 
-    def basic_auth(arg=nil)
+    def basic_auth(arg = nil)
       enable_auth('Basic', arg)
     end
 
-    def kerberos_auth(arg=nil)
+    def kerberos_auth(arg = nil)
       enable_auth('Kerberos', arg)
     end
 
-    def negotiate_auth(arg=nil)
+    def negotiate_auth(arg = nil)
       enable_auth('Negotiate', arg)
     end
 
-    def certificate_auth(arg=nil)
+    def certificate_auth(arg = nil)
       enable_auth('Certificate', arg)
     end
 
-    def cred_ssp_auth(arg=nil)
+    def cred_ssp_auth(arg = nil)
       enable_auth('CredSSP', arg)
     end
 
     protected
 
-    def default_port(scheme, value=nil)
+    def default_port(scheme, value = nil)
       @properties['DefaultPorts'] ||= {}
       if value
-        @properties['DefaultPorts'][scheme] = integer_to_s("#{scheme}_port", value, 1, 65535)
+        @properties['DefaultPorts'][scheme] = integer_to_s("#{scheme}_port", value, 1, MAX_INT16)
       else
         @properties['DefaultPorts'][scheme]
       end
     end
 
-    def enable_auth(type, value=nil)
+    def enable_auth(type, value = nil)
       @properties['Auth'] ||= {}
       if value
         @properties['Auth'][type] = boolean_to_s("#{type}_auth", value)

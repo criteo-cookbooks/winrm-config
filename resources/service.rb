@@ -23,9 +23,9 @@ include WinrmConfig::BaseResourceSecurity
 
 default_action :configure
 
-HARDENING_LEVELS = ['None', 'Relaxed', 'Strict']
+HARDENING_LEVELS = %w(None Relaxed Strict)
 
-def cbt_hardening_level(arg=nil)
+def cbt_hardening_level(arg = nil)
   @properties['Auth'] ||= {}
   if arg
     @properties['Auth']['CbtHardeningLevel'] = validate_string('cbt_hardening_level', arg, HARDENING_LEVELS)
@@ -34,23 +34,23 @@ def cbt_hardening_level(arg=nil)
   end
 end
 
-def concurrence_per_user(arg=nil)
+def concurrence_per_user(arg = nil)
   if arg
-    @properties['MaxConcurrentOperationsPerUser'] = integer_to_s('concurrence_per_user', arg, 0, 2147483647)
+    @properties['MaxConcurrentOperationsPerUser'] = integer_to_s('concurrence_per_user', arg, 0, MAX_INT16)
   else
     @properties['MaxConcurrentOperationsPerUser']
   end
 end
 
-def enumeration_timeout(arg=nil)
+def enumeration_timeout(arg = nil)
   if arg
-    @properties['EnumerationTimeoutms'] = integer_to_s('enumeration_timeout', arg, 0, 2147483647)
+    @properties['EnumerationTimeoutms'] = integer_to_s('enumeration_timeout', arg, 0, MAX_INT16)
   else
     @properties['EnumerationTimeoutms']
   end
 end
 
-def http_compatibility(arg=nil)
+def http_compatibility(arg = nil)
   if arg
     @properties['EnableCompatibilityHttpListener'] = boolean_to_s('http_compatibility', value)
   else
@@ -58,7 +58,7 @@ def http_compatibility(arg=nil)
   end
 end
 
-def https_compatibility(arg=nil)
+def https_compatibility(arg = nil)
   if arg
     @properties['EnableCompatibilityHttpsListener'] = boolean_to_s('https_compatibility', value)
   else
@@ -66,7 +66,7 @@ def https_compatibility(arg=nil)
   end
 end
 
-def ipv4_filter(arg=nil)
+def ipv4_filter(arg = nil)
   if arg
     @properties['IPv4Filter'] = arg
   else
@@ -74,7 +74,7 @@ def ipv4_filter(arg=nil)
   end
 end
 
-def ipv6_filter(arg=nil)
+def ipv6_filter(arg = nil)
   if arg
     @properties['IPv6Filter'] = arg
   else
@@ -82,23 +82,23 @@ def ipv6_filter(arg=nil)
   end
 end
 
-def max_connections(arg=nil)
+def max_connections(arg = nil)
   if arg
-    @properties['MaxConnections'] = integer_to_s('max_connections', arg, 0, 2147483647)
+    @properties['MaxConnections'] = integer_to_s('max_connections', arg, 0, MAX_INT16)
   else
     @properties['MaxConnections']
   end
 end
 
-def receive_timeout(arg=nil)
+def receive_timeout(arg = nil)
   if arg
-    @properties['MaxPacketRetrievalTimeSeconds'] = integer_to_s('receive_timeout', arg, 0, 2147483647)
+    @properties['MaxPacketRetrievalTimeSeconds'] = integer_to_s('receive_timeout', arg, 0, MAX_INT16)
   else
     @properties['MaxPacketRetrievalTimeSeconds']
   end
 end
 
-def root_sddl(arg=nil)
+def root_sddl(arg = nil)
   if arg
     @properties['RootSDDL'] = arg
   else

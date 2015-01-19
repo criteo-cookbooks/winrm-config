@@ -31,7 +31,7 @@ def load_current_resource
 end
 
 action :configure do
-  if has_changes? current_resource.properties, new_resource.properties
+  if changes? current_resource.properties, new_resource.properties
     converge_by 'configuring WinRM listener' do
       action = current_resource.properties.empty? ? :Create : :Put
       winrm_config path, get_final_config('Listener'), action
