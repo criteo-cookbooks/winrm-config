@@ -1,7 +1,7 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
 # Cookbook Name:: winrm-config
-# Recipe:: default
+# Recipe:: listeners
 #
 # Copyright:: Copyright (c) 2015 Criteo.
 #
@@ -20,8 +20,15 @@
 
 return unless platform? 'windows'
 
-include_recipe 'winrm-config::protocol'
-include_recipe 'winrm-config::client'
-include_recipe 'winrm-config::listeners'
-include_recipe 'winrm-config::service'
-include_recipe 'winrm-config::winrs'
+node['winrm_config']['listeners'].each do |key, conf|
+  next if conf.nil? || conf.empty?
+  winrm_config_listener "#{key} listener configuration" do
+    address                    conf['Address']
+    enable                     conf['Enabled']
+    certificate_thumbprint     conf['CertificateThumbprint']
+    hostname                   conf['Hostname']
+    port                       conf['Port']
+    transport                  conf['Transport']
+    url_prefix                 conf['URLPrefix']
+  end
+end

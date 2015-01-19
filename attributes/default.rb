@@ -80,3 +80,15 @@ default['winrm_config']['protocol'] = {
   'MaxTimeoutms' =>                                60000,
   'MaxBatchItems' =>                               32000,
 }
+
+default['winrm_config']['listeners'] = {
+  'HTTP' => {
+    'Address' =>                                   '*',
+    'CertificateThumbprint' =>                     nil,
+    'Enabled' =>                                   true,
+    'Hostname' =>                                  nil,
+    'Port' =>                                      5985,
+    'Transport' =>                                 'HTTP',
+    'URLPrefix' =>                                 'wsman',
+    },
+}
