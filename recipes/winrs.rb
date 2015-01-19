@@ -1,7 +1,7 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
 # Cookbook Name:: winrm-config
-# Recipe:: default
+# Recipe:: winrs
 #
 # Copyright:: Copyright (c) 2015 Criteo.
 #
@@ -20,7 +20,13 @@
 
 return unless platform? 'windows'
 
-include_recipe 'winrm-config::protocol'
-include_recipe 'winrm-config::client'
-include_recipe 'winrm-config::service'
-include_recipe 'winrm-config::winrs'
+winrs_conf = node['winrm_config']['winrs']
+
+winrm_config_winrs 'winrs configuration' do
+  enable                     winrs_conf['AllowRemoteShellAccess']
+  idle_timeout               winrs_conf['IdleTimeout']
+  concurrent_users           winrs_conf['MaxConcurrentUsers']
+  process_per_shell          winrs_conf['MaxProcessesPerShell']
+  memory_per_shell           winrs_conf['MaxMemoryPerShellMB']
+  shell_per_user             winrs_conf['MaxShellsPerUser']
+end

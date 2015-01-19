@@ -17,3 +17,66 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+return unless platform? 'windows'
+
+default['winrm_config']['client'] = {
+  'AllowUnencrypted' =>                            false,
+  'Auth' => {
+    'Basic' =>                                     true,
+    'Digest' =>                                    true,
+    'Kerberos' =>                                  true,
+    'Negotiate' =>                                 true,
+    'Certificate' =>                               true,
+    'CredSSP' =>                                   false,
+  },
+  'DefaultPorts' => {
+    'HTTP' =>                                      5985,
+    'HTTPS' =>                                     5986,
+  },
+  'NetworkDelayms' =>                              5000,
+  'URLPrefix' =>                                   'wsman',
+  'TrustedHosts' =>                                '',
+}
+
+
+sddl = 'O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;ER)S:P(AU;FA;GA;;;WD)(AU;SA;GWGX;;;WD)'
+default['winrm_config']['service'] = {
+ 'AllowUnencrypted' =>                             false,
+ 'Auth' => {
+    'Basic' =>                                     true,
+    'Kerberos' =>                                  true,
+    'Negotiate' =>                                 true,
+    'Certificate' =>                               true,
+    'CredSSP' =>                                   false,
+    'CbtHardeningLevel' =>                         'Relaxed',
+  },
+ 'DefaultPorts' => {
+    'HTTP' =>                                      5985,
+    'HTTPS' =>                                     5986,
+  },
+ 'EnableCompatibilityHttpListener' =>              false,
+ 'EnableCompatibilityHttpsListener' =>             false,
+ 'EnumerationTimeoutms' =>                         60000,
+ 'IPv4Filter' =>                                   '*',
+ 'IPv6Filter' =>                                   '*',
+ 'MaxConcurrentOperationsPerUser' =>               1500,
+ 'MaxConnections' =>                               25,
+ 'MaxPacketRetrievalTimeSeconds' =>                120,
+ 'RootSDDL' =>                                     sddl,
+}
+
+default['winrm_config']['winrs'] = {
+  'AllowRemoteShellAccess' =>                      true,
+  'IdleTimeout' =>                                 180000,
+  'MaxConcurrentUsers' =>                          5,
+  'MaxMemoryPerShellMB' =>                         150,
+  'MaxProcessesPerShell' =>                        15,
+  'MaxShellsPerUser' =>                            5,
+}
+
+default['winrm_config']['protocol'] = {
+  'MaxEnvelopeSizekb' =>                           150,
+  'MaxTimeoutms' =>                                60000,
+  'MaxBatchItems' =>                               32000,
+}

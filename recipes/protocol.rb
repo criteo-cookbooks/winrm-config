@@ -1,7 +1,7 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
 # Cookbook Name:: winrm-config
-# Recipe:: default
+# Recipe:: protocol
 #
 # Copyright:: Copyright (c) 2015 Criteo.
 #
@@ -20,7 +20,10 @@
 
 return unless platform? 'windows'
 
-include_recipe 'winrm-config::protocol'
-include_recipe 'winrm-config::client'
-include_recipe 'winrm-config::service'
-include_recipe 'winrm-config::winrs'
+protocol_conf = node['winrm_config']['protocol']
+
+winrm_config_protocol 'protocol configuration' do
+  max_envelop_size           protocol_conf['MaxEnvelopeSizekb']
+  max_timeout                protocol_conf['MaxTimeoutms']
+  max_batch_items            protocol_conf['MaxBatchItems']
+end
