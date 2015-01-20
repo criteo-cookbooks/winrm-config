@@ -23,7 +23,7 @@ include WinrmConfig::ProviderHelper
 
 def load_current_resource
   @current_resource = Chef::Resource::WinrmConfigWinrs.new(new_resource.name, @run_context)
-  @current_resource.properties winrm_config('config/winrs')['Winrs']
+  @current_resource.properties winrm_get('config/winrs')['Winrs']
 
   Chef::Log.info('Current WinRM winrs config')
   Chef::Log.info(@current_resource.properties)
@@ -32,7 +32,7 @@ end
 action :configure do
   if changes? current_resource.properties, new_resource.properties
     converge_by 'configuring WinRM winrs' do
-      winrm_config 'config/winrs', get_final_config('Winrs')
+      winrm_set 'config/winrs', get_final_config('Winrs')
     end
     new_resource.updated_by_last_action true
   end

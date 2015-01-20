@@ -23,7 +23,7 @@ include WinrmConfig::ProviderHelper
 
 def load_current_resource
   @current_resource = Chef::Resource::WinrmConfigListener.new(new_resource.name, @run_context)
-  @current_resource.properties winrm_config(path)['Listener'] rescue {}
+  @current_resource.properties winrm_get(path)['Listener']
   @current_resource.properties.delete 'ListeningOn'
 
   Chef::Log.info('Current WinRM listener config')
@@ -34,7 +34,7 @@ action :configure do
   if changes? current_resource.properties, new_resource.properties
     converge_by 'configuring WinRM listener' do
       action = current_resource.properties.empty? ? :Create : :Put
-      winrm_config path, get_final_config('Listener'), action
+      winrm_set path, get_final_config('Listener'), action
     end
     new_resource.updated_by_last_action true
   end

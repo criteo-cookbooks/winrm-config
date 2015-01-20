@@ -25,38 +25,32 @@ module WinrmConfig
   # It's used by all `winrm-config` providers.
   module ProviderHelper
     def winrm_delete(path)
-      wsman = WIN32OLE.new('WSMAN.Automation')
-      session = wsman.CreateSession
-      session.Delete wsman.CreateResourceLocator("winrm/#{path}")
+      locator = wsman.CreateResourceLocator "winrm/#{path}"
+      wsman_session.Delete locator
     end
 
-    def winrm_config(path, config = nil, write_action = :Put)
-      wsman = WIN32OLE.new('WSMAN.Automation')
-      session = wsman.CreateSession
+    def winrm_get(path)
       locator = wsman.CreateResourceLocator "winrm/#{path}"
+      xml_to_hash ::REXML::Document.new(wsman_session.Get locator).root
+    rescue
+      {}
+    end
 
-      if config.nil?
-        xml = session.Get locator
-        xml_to_hash REXML::Document.new(xml).root
-      else
-        doc = REXML::Document.new
-        hash_to_xml config, doc
-        doc.root.add_namespace 'cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path.split('?').first}"
-        doc.root.add_attribute 'xml:lang', 'en-US'
-        session.send write_action, locator, doc.to_s
-      end
+    def winrm_set(path, config, action = :Put)
+      locator = wsman.CreateResourceLocator "winrm/#{path}"
+      doc = ::REXML::Document.new
+      hash_to_xml config, doc
+      doc.root.add_namespace 'cfg', "http://schemas.microsoft.com/wbem/wsman/1/#{path.split('?').first}"
+
+      wsman_session.send action, locator, doc.to_s
     end
 
     def changes?(current_hash, new_hash)
       new_hash.any? do |key, value|
-        if current_hash.key? key
-          if value.is_a? Hash
-            changes? current_hash[key], value
-          else
-            value != current_hash[key]
-          end
+        if current_hash.key?(key) && value.is_a?(Hash)
+          changes?(current_hash[key], value)
         else
-          true
+          value != current_hash[key]
         end
       end
     end
@@ -78,6 +72,14 @@ module WinrmConfig
     end
 
     private
+
+    def wsman
+      @wsman ||= ::WIN32OLE.new('WSMAN.Automation')
+    end
+
+    def wsman_session
+      @wsman_session ||= wsman.CreateSession
+    end
 
     def hash_to_xml(hash, parent = nil)
       hash.map do |key, value|

@@ -23,7 +23,7 @@ include WinrmConfig::ProviderHelper
 
 def load_current_resource
   @current_resource = Chef::Resource::WinrmConfigListener.new(new_resource.name, @run_context)
-  @current_resource.properties winrm_config(path)['CertMapping'] rescue {}
+  @current_resource.properties winrm_get(path)['CertMapping']
 
   Chef::Log.info('Current WinRM service certificate mapping')
   Chef::Log.info(@current_resource.properties)
@@ -35,7 +35,7 @@ action :configure do
     new_resource.password pwd
     converge_by 'configuring WinRM service certificate mapping' do
       action = current_resource.properties.empty? ? :Create : :Put
-      winrm_config path, get_final_config('Certmapping'), action
+      winrm_set path, get_final_config('Certmapping'), action
     end
     new_resource.updated_by_last_action true
   end
