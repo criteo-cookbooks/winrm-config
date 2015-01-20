@@ -22,25 +22,25 @@ include WinrmConfig::BaseResource
 default_action :configure
 
 def max_envelop_size(arg = nil)
-  if arg
-    @properties['MaxEnvelopeSizekb'] = integer_to_s('max_envelop_size', arg, 0, 1_039_440)
-  else
+  if arg.nil?
     @properties['MaxEnvelopeSizekb']
+  else
+    @properties['MaxEnvelopeSizekb'] = integer_to_s('max_envelop_size', arg, 0, 1_039_440)
   end
 end
 
 def max_timeout(arg = nil)
-  if arg
-    @properties['MaxTimeoutms'] = integer_to_s('max_timeout', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['MaxTimeoutms']
+  else
+    @properties['MaxTimeoutms'] = integer_to_s('max_timeout', arg, 0, MAX_INT16)
   end
 end
 
 def max_batch_items(arg = nil)
-  if arg
-    @properties['MaxBatchItems'] = integer_to_s('max_batch_items', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['MaxBatchItems']
+  else
+    @properties['MaxBatchItems'] = integer_to_s('max_batch_items', arg, 0, MAX_INT16)
   end
 end

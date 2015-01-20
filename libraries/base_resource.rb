@@ -34,9 +34,7 @@ module WinrmConfig
     end
 
     def properties(arg = nil)
-      if arg
-        @properties = arg.merge(@properties)
-      end
+      @properties = arg.merge(@properties) unless arg.nil?
       @properties
     end
 

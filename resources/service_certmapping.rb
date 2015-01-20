@@ -23,49 +23,49 @@ default_action :configure
 actions :configure, :delete
 
 def enable(arg = nil)
-  if arg
-    @properties['Enabled'] = boolean_to_s('enable', arg)
-  else
+  if arg.nil?
     @properties['Enabled']
+  else
+    @properties['Enabled'] = boolean_to_s('enable', arg)
   end
 end
 
 def issuer(arg = nil)
-  if arg
-    @properties['Issuer'] = arg
-  else
+  if arg.nil?
     @properties['Issuer']
+  else
+    @properties['Issuer'] = arg
   end
 end
 
 def subject(arg = nil)
-  if arg
-    @properties['Subject'] = arg
-  else
+  if arg.nil?
     @properties['Subject']
+  else
+    @properties['Subject'] = arg
   end
 end
 
 def uri(arg = nil)
-  if arg
-    @properties['URI'] = arg
-  else
+  if arg.nil?
     @properties['URI']
+  else
+    @properties['URI'] = arg
   end
 end
 
 def username(arg = nil)
-  if arg
-    @properties['UserName'] = arg
-  else
+  if arg.nil?
     @properties['UserName']
+  else
+    @properties['UserName'] = arg
   end
 end
 
 def password(arg = nil)
-  if arg
-    @properties['Password'] = arg
-  else
+  if arg.nil?
     @properties['Password']
+  else
+    @properties['Password'] = arg
   end
 end

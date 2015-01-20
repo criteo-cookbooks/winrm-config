@@ -25,57 +25,57 @@ actions :configure, :delete
 TRANSPORTS = %w(HTTP HTTPS)
 
 def address(arg = nil)
-  if arg
-    @properties['Address'] = arg
-  else
+  if arg.nil?
     @properties['Address']
+  else
+    @properties['Address'] = arg
   end
 end
 
 def certificate_thumbprint(arg = nil)
-  if arg
-    @properties['CertificateThumbprint'] = arg
-  else
+  if arg.nil?
     @properties['CertificateThumbprint']
+  else
+    @properties['CertificateThumbprint'] = arg
   end
 end
 
 def enable(arg = nil)
-  if arg
-    @properties['Enabled'] = boolean_to_s('enable', arg)
-  else
+  if arg.nil?
     @properties['Enabled']
+  else
+    @properties['Enabled'] = boolean_to_s('enable', arg)
   end
 end
 
 def hostname(arg = nil)
-  if arg
-    @properties['Hostname'] = arg
-  else
+  if arg.nil?
     @properties['Hostname']
+  else
+    @properties['Hostname'] = arg
   end
 end
 
 def port(arg = nil)
-  if arg
-    @properties['Port'] = integer_to_s('port', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['Port']
+  else
+    @properties['Port'] = integer_to_s('port', arg, 0, MAX_INT16)
   end
 end
 
 def transport(arg = nil)
-  if arg
-    @properties['Transport'] = validate_string('transport', arg, TRANSPORTS)
-  else
+  if arg.nil?
     @properties['Transport']
+  else
+    @properties['Transport'] = validate_string('transport', arg, TRANSPORTS)
   end
 end
 
 def url_prefix(arg = nil)
-  if arg
-    @properties['URLPrefix'] = arg
-  else
+  if arg.nil?
     @properties['URLPrefix']
+  else
+    @properties['URLPrefix'] = arg
   end
 end

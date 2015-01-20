@@ -28,25 +28,25 @@ def digest_auth(arg = nil)
 end
 
 def network_delay(arg = nil)
-  if arg
-    @properties['NetworkDelayms'] = integer_to_s('network_delay', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['NetworkDelayms']
+  else
+    @properties['NetworkDelayms'] = integer_to_s('network_delay', arg, 0, MAX_INT16)
   end
 end
 
 def url_prefix(arg = nil)
-  if arg
-    @properties['URLPrefix'] = arg
-  else
+  if arg.nil?
     @properties['URLPrefix']
+  else
+    @properties['URLPrefix'] = arg
   end
 end
 
 def trusted_hosts(arg = nil)
-  if arg
-    @properties['TrustedHosts'] = arg
-  else
+  if arg.nil?
     @properties['TrustedHosts']
+  else
+    @properties['TrustedHosts'] = arg
   end
 end

@@ -27,81 +27,81 @@ HARDENING_LEVELS = %w(None Relaxed Strict)
 
 def cbt_hardening_level(arg = nil)
   @properties['Auth'] ||= {}
-  if arg
-    @properties['Auth']['CbtHardeningLevel'] = validate_string('cbt_hardening_level', arg, HARDENING_LEVELS)
-  else
+  if arg.nil?
     @properties['Auth']['CbtHardeningLevel']
+  else
+    @properties['Auth']['CbtHardeningLevel'] = validate_string('cbt_hardening_level', arg, HARDENING_LEVELS)
   end
 end
 
 def concurrence_per_user(arg = nil)
-  if arg
-    @properties['MaxConcurrentOperationsPerUser'] = integer_to_s('concurrence_per_user', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['MaxConcurrentOperationsPerUser']
+  else
+    @properties['MaxConcurrentOperationsPerUser'] = integer_to_s('concurrence_per_user', arg, 0, MAX_INT16)
   end
 end
 
 def enumeration_timeout(arg = nil)
-  if arg
-    @properties['EnumerationTimeoutms'] = integer_to_s('enumeration_timeout', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['EnumerationTimeoutms']
+  else
+    @properties['EnumerationTimeoutms'] = integer_to_s('enumeration_timeout', arg, 0, MAX_INT16)
   end
 end
 
 def http_compatibility(arg = nil)
-  if arg
-    @properties['EnableCompatibilityHttpListener'] = boolean_to_s('http_compatibility', value)
-  else
+  if arg.nil?
     @properties['EnableCompatibilityHttpListener']
+  else
+    @properties['EnableCompatibilityHttpListener'] = boolean_to_s('http_compatibility', arg)
   end
 end
 
 def https_compatibility(arg = nil)
-  if arg
-    @properties['EnableCompatibilityHttpsListener'] = boolean_to_s('https_compatibility', value)
-  else
+  if arg.nil?
     @properties['EnableCompatibilityHttpsListener']
+  else
+    @properties['EnableCompatibilityHttpsListener'] = boolean_to_s('https_compatibility', arg)
   end
 end
 
 def ipv4_filter(arg = nil)
-  if arg
-    @properties['IPv4Filter'] = arg
-  else
+  if arg.nil?
     @properties['IPv4Filter']
+  else
+    @properties['IPv4Filter'] = arg
   end
 end
 
 def ipv6_filter(arg = nil)
-  if arg
-    @properties['IPv6Filter'] = arg
-  else
+  if arg.nil?
     @properties['IPv6Filter']
+  else
+    @properties['IPv6Filter'] = arg
   end
 end
 
 def max_connections(arg = nil)
-  if arg
-    @properties['MaxConnections'] = integer_to_s('max_connections', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['MaxConnections']
+  else
+    @properties['MaxConnections'] = integer_to_s('max_connections', arg, 0, MAX_INT16)
   end
 end
 
 def receive_timeout(arg = nil)
-  if arg
-    @properties['MaxPacketRetrievalTimeSeconds'] = integer_to_s('receive_timeout', arg, 0, MAX_INT16)
-  else
+  if arg.nil?
     @properties['MaxPacketRetrievalTimeSeconds']
+  else
+    @properties['MaxPacketRetrievalTimeSeconds'] = integer_to_s('receive_timeout', arg, 0, MAX_INT16)
   end
 end
 
 def root_sddl(arg = nil)
-  if arg
-    @properties['RootSDDL'] = arg
-  else
+  if arg.nil?
     @properties['RootSDDL']
+  else
+    @properties['RootSDDL'] = arg
   end
 end

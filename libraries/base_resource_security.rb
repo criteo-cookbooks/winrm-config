@@ -22,14 +22,13 @@ module WinrmConfig
   # Module to extend Chef Resources with winrm security attributes.
   # It's used by `client` & `service` winrm-config resources.
   module BaseResourceSecurity
-
     include ::WinrmConfig::BaseResource
 
     def allow_unencrypted(arg = nil)
-      if arg
-        @properties['AllowUnencrypted'] = boolean_to_s('allow_unencrypted', arg)
-      else
+      if arg.nil?
         @properties['AllowUnencrypted']
+      else
+        @properties['AllowUnencrypted'] = boolean_to_s('allow_unencrypted', arg)
       end
     end
 
@@ -65,21 +64,20 @@ module WinrmConfig
 
     def default_port(scheme, value = nil)
       @properties['DefaultPorts'] ||= {}
-      if value
-        @properties['DefaultPorts'][scheme] = integer_to_s("#{scheme}_port", value, 1, MAX_INT16)
-      else
+      if value.nil?
         @properties['DefaultPorts'][scheme]
+      else
+        @properties['DefaultPorts'][scheme] = integer_to_s("#{scheme}_port", value, 1, MAX_INT16)
       end
     end
 
     def enable_auth(type, value = nil)
       @properties['Auth'] ||= {}
-      if value
-        @properties['Auth'][type] = boolean_to_s("#{type}_auth", value)
-      else
+      if value.nil?
         @properties['Auth'][type]
+      else
+        @properties['Auth'][type] = boolean_to_s("#{type}_auth", value)
       end
     end
-
   end
 end
