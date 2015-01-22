@@ -21,8 +21,8 @@ module WinrmConfig
   # Module to extend Chef Resources with helpers and properties' Hash table
   # It's used by all `winrm-config` resources.
   module BaseResource
-    MAX_INT16 = 65_535
-    MAX_INT32 = 2_147_483_647
+    MAX_INT16 = 65_535 unless defined? MAX_INT16
+    MAX_INT32 = 2_147_483_647unless defined? MAX_INT32
 
     def initialize(name, run_context = nil)
       super(name, run_context)
