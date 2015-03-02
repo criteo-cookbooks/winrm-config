@@ -20,19 +20,25 @@
 
 return unless platform? 'windows'
 
-client_conf = node['winrm_config']['client']
+include_recipe 'winrm-config::windows_service'
 
-winrm_config_client 'client configuration' do
-  allow_unencrypted          client_conf['AllowUnencrypted']
-  basic_auth                 client_conf['Auth']['Basic']
-  digest_auth                client_conf['Auth']['Digest']
-  kerberos_auth              client_conf['Auth']['Kerberos']
-  negotiate_auth             client_conf['Auth']['Negotiate']
-  certificate_auth           client_conf['Auth']['Certificate']
-  cred_ssp_auth              client_conf['Auth']['CredSSP']
-  http_port                  client_conf['DefaultPorts']['HTTP']
-  https_port                 client_conf['DefaultPorts']['HTTPS']
-  network_delay              client_conf['NetworkDelayms']
-  trusted_hosts              client_conf['TrustedHosts']
-  url_prefix                 client_conf['URLPrefix']
+client_conf = node['winrm_config']['client']
+registry_key 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client' do
+  action    :create
+  recursive true
+  values [
+    { name: 'allow_unencrypted',  type: :dword,  data: client_conf['AllowUnencrypted'] ? 1 : 0 },
+    { name: 'auth_basic',         type: :dword,  data: client_conf['Basic'] ? 1 : 0 },
+    { name: 'auth_certificate',   type: :dword,  data: client_conf['Certificate'] ? 1 : 0 },
+    { name: 'auth_credssp',       type: :dword,  data: client_conf['CredSSP'] ? 1 : 0 },
+    { name: 'auth_digest',        type: :dword,  data: client_conf['Digest'] ? 1 : 0 },
+    { name: 'auth_kerberos',      type: :dword,  data: client_conf['Kerberos'] ? 1 : 0 },
+    { name: 'auth_negotiate',     type: :dword,  data: client_conf['Negotiate'] ? 1 : 0 },
+    { name: 'defaultports_http',  type: :dword,  data: client_conf['DefaultPorts']['HTTP'] },
+    { name: 'defaultports_https', type: :dword,  data: client_conf['DefaultPorts']['HTTPS'] },
+    { name: 'network_delay',      type: :dword,  data: client_conf['NetworkDelayms'] },
+    { name: 'trusted_hosts',      type: :string, data: client_conf['TrustedHosts'] },
+    { name: 'url_prefix',         type: :string, data: client_conf['URLPrefix'] },
+  ]
+  notifies :restart, 'service[WinRM]', :delayed
 end

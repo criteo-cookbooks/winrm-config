@@ -22,17 +22,17 @@ return unless platform? 'windows'
 
 client_conf = default['winrm_config']['client']
 client_conf['AllowUnencrypted'] =                  false
-client_conf['Auth']['Basic'] =                     true
-client_conf['Auth']['Digest'] =                    true
-client_conf['Auth']['Kerberos'] =                  true
-client_conf['Auth']['Negotiate'] =                 true
-client_conf['Auth']['Certificate'] =               true
-client_conf['Auth']['CredSSP'] =                   false
+client_conf['Basic'] =                             true
+client_conf['Certificate'] =                       true
+client_conf['CredSSP'] =                           false
+client_conf['Digest'] =                            true
+client_conf['Kerberos'] =                          true
+client_conf['Negotiate'] =                         true
 client_conf['DefaultPorts']['HTTP'] =              5985
 client_conf['DefaultPorts']['HTTPS'] =             5986
 client_conf['NetworkDelayms'] =                    5000
-client_conf['URLPrefix'] =                         'wsman'
 client_conf['TrustedHosts'] =                      ''
+client_conf['URLPrefix'] =                         'wsman'
 
 sddl = 'O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;ER)S:P(AU;FA;GA;;;WD)(AU;SA;GWGX;;;WD)'
 service_conf = default['winrm_config']['service']

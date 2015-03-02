@@ -1,9 +1,4 @@
 if defined?(ChefSpec)
-  ChefSpec.define_matcher :winrm_config_client
-  def configure_winrm_config_client(resource)
-    ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_client, :configure, resource)
-  end
-
   ChefSpec.define_matcher :winrm_config_listener
   def configure_winrm_config_listener(resource)
     ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_listener, :configure, resource)

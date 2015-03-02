@@ -7,7 +7,7 @@ describe 'winrm-config::client' do
     end
 
     it 'configures winrm client' do
-      expect(windows_chef_run).to configure_winrm_config_client('client configuration')
+      expect(windows_chef_run).to create_registry_key('HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client')
     end
   end
   describe 'On non-windows platform' do
