@@ -13,11 +13,6 @@ if defined?(ChefSpec)
     ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_protocol, :configure, resource)
   end
 
-  ChefSpec.define_matcher :winrm_config_service
-  def configure_winrm_config_service(resource)
-    ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_service, :configure, resource)
-  end
-
   ChefSpec.define_matcher :winrm_config_service_certmapping
   def configure_winrm_config_service_certmapping(resource)
     ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_service_certmapping, :configure, resource)

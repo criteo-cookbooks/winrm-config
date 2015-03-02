@@ -20,25 +20,29 @@
 
 return unless platform? 'windows'
 
-service_conf = node['winrm_config']['service']
+include_recipe 'winrm-config::windows_service'
 
-winrm_config_service 'service configuration' do
-  allow_unencrypted          service_conf['AllowUnencrypted']
-  basic_auth                 service_conf['Auth']['Basic']
-  kerberos_auth              service_conf['Auth']['Kerberos']
-  negotiate_auth             service_conf['Auth']['Negotiate']
-  certificate_auth           service_conf['Auth']['Certificate']
-  cred_ssp_auth              service_conf['Auth']['CredSSP']
-  cbt_hardening_level        service_conf['Auth']['CbtHardeningLevel']
-  http_port                  service_conf['DefaultPorts']['HTTP']
-  https_port                 service_conf['DefaultPorts']['HTTPS']
-  concurrence_per_user       service_conf['MaxConcurrentOperationsPerUser']
-  enumeration_timeout        service_conf['EnumerationTimeoutms']
-  http_compatibility         service_conf['EnableCompatibilityHttpListener']
-  https_compatibility        service_conf['EnableCompatibilityHttpsListener']
-  ipv4_filter                service_conf['IPv4Filter']
-  ipv6_filter                service_conf['IPv6Filter']
-  max_connections            service_conf['MaxConnections']
-  receive_timeout            service_conf['MaxPacketRetrievalTimeSeconds']
-  root_sddl                  service_conf['RootSDDL']
+service_conf = node['winrm_config']['service']
+registry_key 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Service' do
+  action          :create
+  recursive       true
+  values [
+    { name: 'allow_unencrypted',              type: :dword,  data: service_conf['AllowUnencrypted'] ? 1 : 0 },
+    { name: 'auth_basic',                     type: :dword,  data: service_conf['Basic'] ? 1 : 0 },
+    { name: 'auth_certificate',               type: :dword,  data: service_conf['Certificate'] ? 1 : 0 },
+    { name: 'auth_credssp',                   type: :dword,  data: service_conf['CredSSP'] ? 1 : 0 },
+    { name: 'auth_kerberos',                  type: :dword,  data: service_conf['Kerberos'] ? 1 : 0 },
+    { name: 'auth_negotiate',                 type: :dword,  data: service_conf['Negotiate'] ? 1 : 0 },
+    { name: 'cbt_hardening_level',            type: :string, data: service_conf['CbtHardeningLevel'] },
+    { name: 'continuedOpTimeoutms',           type: :dword,  data: service_conf['EnumerationTimeoutms'] },
+    { name: 'http_compat_listener',           type: :dword,  data: service_conf['EnableCompatibilityHttpListener'] ? 1 : 0 },
+    { name: 'https_compat_listener',          type: :dword,  data: service_conf['EnableCompatibilityHttpsListener'] ? 1 : 0 },
+    { name: 'IPv4Filter',                     type: :string, data: service_conf['IPv4Filter'] },
+    { name: 'IPv6Filter',                     type: :string, data: service_conf['IPv6Filter'] },
+    { name: 'maxConcurrentOperationsPerUser', type: :dword,  data: service_conf['MaxConcurrentOperationsPerUser'] },
+    { name: 'maxconnections',                 type: :dword,  data: service_conf['MaxConnections'] },
+    { name: 'maxPacketRetrievalTime',         type: :dword,  data: service_conf['MaxPacketRetrievalTimeSeconds'] },
+    { name: 'rootSDDL',                       type: :string, data: service_conf['RootSDDL'] },
+  ]
+  notifies :restart, 'service[WinRM]', :delayed
 end
