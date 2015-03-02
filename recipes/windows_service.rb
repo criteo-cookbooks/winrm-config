@@ -1,7 +1,7 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
 # Cookbook Name:: winrm-config
-# Recipe:: default
+# Recipe:: windows_service
 #
 # Copyright:: Copyright (c) 2015 Criteo.
 #
@@ -20,9 +20,6 @@
 
 return unless platform? 'windows'
 
-include_recipe 'winrm-config::windows_service'
-include_recipe 'winrm-config::protocol'
-include_recipe 'winrm-config::client'
-include_recipe 'winrm-config::listeners'
-include_recipe 'winrm-config::service'
-include_recipe 'winrm-config::winrs'
+service 'WinRM' do
+  action [:enable, :start]
+end
