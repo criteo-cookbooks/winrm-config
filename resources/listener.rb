@@ -17,65 +17,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include WinrmConfig::BaseResource
 
 default_action :configure
 actions :configure, :delete
 
-TRANSPORTS = %w(HTTP HTTPS)
+attribute :address,                default: '*',     kind_of: String
+attribute :certificate_thumbprint, default: nil,     kind_of: String
+attribute :enabled,                default: true,    kind_of: [TrueClass, FalseClass]
+attribute :hostname,               default: nil,     kind_of: String
+attribute :port,                   default: 5985,    kind_of: Fixnum
+attribute :transport,              default: :HTTP,   kind_of: Symbol, equal_to: [:HTTP, :HTTPS]
+attribute :url_prefix,             default: 'wsman', kind_of: String
 
-def address(arg = nil)
-  if arg.nil?
-    @properties['Address']
-  else
-    @properties['Address'] = arg
-  end
-end
-
-def certificate_thumbprint(arg = nil)
-  if arg.nil?
-    @properties['CertificateThumbprint']
-  else
-    @properties['CertificateThumbprint'] = arg
-  end
-end
-
-def enable(arg = nil)
-  if arg.nil?
-    @properties['Enabled']
-  else
-    @properties['Enabled'] = boolean_to_s('enable', arg)
-  end
-end
-
-def hostname(arg = nil)
-  if arg.nil?
-    @properties['Hostname']
-  else
-    @properties['Hostname'] = arg
-  end
-end
-
-def port(arg = nil)
-  if arg.nil?
-    @properties['Port']
-  else
-    @properties['Port'] = integer_to_s('port', arg, 0, MAX_INT16)
-  end
-end
-
-def transport(arg = nil)
-  if arg.nil?
-    @properties['Transport']
-  else
-    @properties['Transport'] = validate_string('transport', arg, TRANSPORTS)
-  end
-end
-
-def url_prefix(arg = nil)
-  if arg.nil?
-    @properties['URLPrefix']
-  else
-    @properties['URLPrefix'] = arg
-  end
+def key_name
+  @key ||= "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WSMAN\\Listener\\#{address}+#{transport}"
 end

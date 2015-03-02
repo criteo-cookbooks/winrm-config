@@ -17,40 +17,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 use_inline_resources
 
-include WinrmConfig::ProviderHelper
-
-def load_current_resource
-  @current_resource = Chef::Resource::WinrmConfigListener.new(new_resource.name, @run_context)
-  @current_resource.properties winrm_get(path)['Listener']
-  @current_resource.properties.delete 'ListeningOn'
-
-  Chef::Log.info('Current WinRM listener config')
-  Chef::Log.info(@current_resource.properties)
-end
-
 action :configure do
-  if changes? current_resource.properties, new_resource.properties
-    converge_by 'configuring WinRM listener' do
-      action = current_resource.properties.empty? ? :Create : :Put
-      winrm_set path, get_final_config('Listener'), action
-    end
-    new_resource.updated_by_last_action true
+  registry_key new_resource.key_name do
+    action    :create
+    recursive true
+    values [
+      { name: 'enabled',        type: :dword,  data: new_resource.enable ? 1 : 0 },
+      { name: 'hostname',       type: :string, data: new_resource.hostname },
+      { name: 'certThumbprint', type: :string, data: new_resource.certificate_thumbprint },
+      { name: 'Port',           type: :dword,  data: new_resource.port },
+      { name: 'uriprefix',      type: :string, data: new_resource.url_prefix },
+    ]
   end
 end
 
 action :delete do
-  unless current_resource.properties.empty?
-    converge_by 'deleting WinRM listener' do
-      winrm_delete path
-    end
-    new_resource.updated_by_last_action true
+  registry_key new_resource.key_name do
+    action    :delete
   end
-end
-
-private
-
-def path
-  @filter ||= "config/listener?Address=#{new_resource.address}+Transport=#{new_resource.transport}"
 end

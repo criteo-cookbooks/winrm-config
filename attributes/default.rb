@@ -72,5 +72,5 @@ listeners['HTTP']['CertificateThumbprint'] =       nil
 listeners['HTTP']['Enabled'] =                     true
 listeners['HTTP']['Hostname'] =                    nil
 listeners['HTTP']['Port'] =                        5985
-listeners['HTTP']['Transport'] =                   'HTTP'
+listeners['HTTP']['Transport'] =                   :HTTP
 listeners['HTTP']['URLPrefix'] =                   'wsman'

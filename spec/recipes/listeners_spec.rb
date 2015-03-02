@@ -10,7 +10,7 @@ describe 'winrm-config::listeners' do
           'Enabled' =>               true,
           'Hostname' =>              nil,
           'Port' =>                  5985,
-          'Transport' =>             'HTTP',
+          'Transport' =>             :HTTP,
           'URLPrefix' =>             'wsman',
         }
       end.converge(described_recipe)

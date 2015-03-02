@@ -20,15 +20,18 @@
 
 return unless platform? 'windows'
 
+include_recipe 'winrm-config::windows_service'
+
 node['winrm_config']['listeners'].each do |key, conf|
   next if conf.nil? || conf.empty?
   winrm_config_listener "#{key} listener configuration" do
     address                    conf['Address']
-    enable                     conf['Enabled']
+    enabled                    conf['Enabled']
     certificate_thumbprint     conf['CertificateThumbprint']
     hostname                   conf['Hostname']
     port                       conf['Port']
     transport                  conf['Transport']
     url_prefix                 conf['URLPrefix']
+    notifies :restart, 'service[WinRM]', :delayed
   end
 end
