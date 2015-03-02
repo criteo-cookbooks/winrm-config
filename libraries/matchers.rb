@@ -21,9 +21,4 @@ if defined?(ChefSpec)
   def delete_winrm_config_service_certmapping(resource)
     ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_service_certmapping, :delete, resource)
   end
-
-  ChefSpec.define_matcher :winrm_config_winrs
-  def configure_winrm_config_winrs(resource)
-    ChefSpec::Matchers::ResourceMatcher.new(:winrm_config_winrs, :configure, resource)
-  end
 end

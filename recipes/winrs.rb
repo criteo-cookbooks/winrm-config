@@ -20,13 +20,20 @@
 
 return unless platform? 'windows'
 
-winrs_conf = node['winrm_config']['winrs']
+include_recipe 'winrm-config::windows_service'
 
-winrm_config_winrs 'winrs configuration' do
-  enable                     winrs_conf['AllowRemoteShellAccess']
-  idle_timeout               winrs_conf['IdleTimeout']
-  concurrent_users           winrs_conf['MaxConcurrentUsers']
-  process_per_shell          winrs_conf['MaxProcessesPerShell']
-  memory_per_shell           winrs_conf['MaxMemoryPerShellMB']
-  shell_per_user             winrs_conf['MaxShellsPerUser']
+winrs_conf = node['winrm_config']['winrs']
+registry_key 'Setting up winrs' do
+  key       'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client'
+  action    :create
+  recursive true
+  values [
+    { name: 'AllowRemoteShellAccess', type: :dword, data: winrs_conf['AllowRemoteShellAccess'] ? 1 : 0 },
+    { name: 'IdleTimeout',            type: :dword, data: winrs_conf['IdleTimeout'] },
+    { name: 'MaxConcurrentUsers',     type: :dword, data: winrs_conf['MaxConcurrentUsers'] },
+    { name: 'MaxProcessesPerShell',   type: :dword, data: winrs_conf['MaxProcessesPerShell'] },
+    { name: 'MaxMemoryPerShellMB',    type: :dword, data: winrs_conf['MaxMemoryPerShellMB'] },
+    { name: 'MaxShellsPerUser',       type: :dword, data: winrs_conf['MaxShellsPerUser'] },
+  ]
+  notifies :restart, 'service[WinRM]', :delayed
 end

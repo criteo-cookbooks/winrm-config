@@ -7,7 +7,7 @@ describe 'winrm-config::winrs' do
     end
 
     it 'configures winrm winrs' do
-      expect(windows_chef_run).to configure_winrm_config_winrs('winrs configuration')
+      expect(windows_chef_run).to create_registry_key('Setting up winrs').with(key: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client')
     end
   end
   describe 'On non-windows platform' do
