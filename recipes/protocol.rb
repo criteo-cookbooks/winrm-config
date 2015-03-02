@@ -20,10 +20,17 @@
 
 return unless platform? 'windows'
 
-protocol_conf = node['winrm_config']['protocol']
+include_recipe 'winrm-config::windows_service'
 
-winrm_config_protocol 'protocol configuration' do
-  max_envelop_size           protocol_conf['MaxEnvelopeSizekb']
-  max_timeout                protocol_conf['MaxTimeoutms']
-  max_batch_items            protocol_conf['MaxBatchItems']
+protocol_conf = node['winrm_config']['protocol']
+registry_key 'Setting up winrm protocol' do
+  key       'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client'
+  action    :create
+  recursive true
+  values [
+    { name: 'maxEnvelopSize', type: :dword, data: protocol_conf['MaxEnvelopeSizekb'] },
+    { name: 'timeout',        type: :dword, data: protocol_conf['MaxTimeoutms'] },
+    { name: 'batch_maxItems', type: :dword, data: protocol_conf['MaxBatchItems'] },
+  ]
+  notifies :restart, 'service[WinRM]', :delayed
 end

@@ -7,7 +7,7 @@ describe 'winrm-config::protocol' do
     end
 
     it 'configures winrm protocol' do
-      expect(windows_chef_run).to configure_winrm_config_protocol('protocol configuration')
+      expect(windows_chef_run).to create_registry_key('Setting up winrm protocol').with(key: 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client')
     end
   end
   describe 'On non-windows platform' do
