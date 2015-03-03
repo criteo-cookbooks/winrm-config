@@ -17,55 +17,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-include WinrmConfig::BaseResource
-
 default_action :configure
 actions :configure, :delete
 
-def enable(arg = nil)
-  if arg.nil?
-    @properties['Enabled']
-  else
-    @properties['Enabled'] = boolean_to_s('enable', arg)
-  end
+attribute :enabled,  default: true,  kind_of: [TrueClass, FalseClass]
+attribute :issuer,   required: true, kind_of: String
+attribute :password, required: true, kind_of: String
+attribute :subject,  default: '*',   kind_of: String
+attribute :uri,      default: '*',   kind_of: String
+attribute :username, required: true, kind_of: String
+
+def path
+  @path ||= "config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
 end
 
-def issuer(arg = nil)
-  if arg.nil?
-    @properties['Issuer']
-  else
-    @properties['Issuer'] = arg
-  end
-end
-
-def subject(arg = nil)
-  if arg.nil?
-    @properties['Subject']
-  else
-    @properties['Subject'] = arg
-  end
-end
-
-def uri(arg = nil)
-  if arg.nil?
-    @properties['URI']
-  else
-    @properties['URI'] = arg
-  end
-end
-
-def username(arg = nil)
-  if arg.nil?
-    @properties['UserName']
-  else
-    @properties['UserName'] = arg
-  end
-end
-
-def password(arg = nil)
-  if arg.nil?
-    @properties['Password']
-  else
-    @properties['Password'] = arg
-  end
+def hydrate(hash)
+  issuer   hash['Issuer']
+  password hash['Password']
+  subject  hash['Subject']
+  uri      hash['URI']
+  username hash['UserName']
+  enabled(hash['Enabled'] != 'false')
 end
