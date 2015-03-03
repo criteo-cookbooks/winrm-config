@@ -6,9 +6,6 @@
 require 'chefspec'
 require 'chefspec/berkshelf'
 
-#::Chef::Provider::LWRPBase.build_from_file('prm', 'providers/server.rb', nil)
-#::Chef::Provider::LWRPBase.build_from_file('prm', 'providers/resource_link.rb', nil)
-
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.run_all_when_everything_filtered = true
