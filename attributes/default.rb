@@ -20,6 +20,10 @@
 
 return unless platform? 'windows'
 
+# Below attributes follow the msdn default values
+# see https://msdn.microsoft.com/library/aa384372
+
+# Winrm Client default configuration
 client_conf = default['winrm_config']['client']
 client_conf['AllowUnencrypted'] =                  false
 client_conf['Basic'] =                             true
@@ -34,6 +38,7 @@ client_conf['NetworkDelayms'] =                    5000
 client_conf['TrustedHosts'] =                      ''
 client_conf['URLPrefix'] =                         'wsman'
 
+# Winrm Service default configuration
 sddl = 'O:NSG:BAD:P(A;;GA;;;BA)(A;;GR;;;ER)S:P(AU;FA;GA;;;WD)(AU;SA;GWGX;;;WD)'
 service_conf = default['winrm_config']['service']
 service_conf['AllowUnencrypted'] =                 false
@@ -53,6 +58,7 @@ service_conf['MaxConnections'] =                   25
 service_conf['MaxPacketRetrievalTimeSeconds'] =    120
 service_conf['RootSDDL'] =                         sddl
 
+# Winrs default configuration
 winrs_conf = default['winrm_config']['winrs']
 winrs_conf['AllowRemoteShellAccess'] =             true
 winrs_conf['IdleTimeout'] =                        180_000
@@ -61,11 +67,13 @@ winrs_conf['MaxMemoryPerShellMB'] =                150
 winrs_conf['MaxProcessesPerShell'] =               15
 winrs_conf['MaxShellsPerUser'] =                   5
 
+# Winrm Protocol default configuration
 protocol_conf = default['winrm_config']['protocol']
 protocol_conf['MaxEnvelopeSizekb'] =               150
 protocol_conf['MaxTimeoutms'] =                    60_000
 protocol_conf['MaxBatchItems'] =                   32_000
 
+# Winrm listeners
 listeners = default['winrm_config']['listeners']
 listeners['HTTP']['Address'] =                     '*'
 listeners['HTTP']['CertificateThumbprint'] =       nil
