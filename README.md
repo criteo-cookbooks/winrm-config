@@ -98,6 +98,7 @@ HTTPS     | The ports used by the client for HTTPS                    | Fixnum |
 
 ## winrm-config::default
 A convenience recipe that include the following recipes to enable a default WinRM working service:
+
 * `winrm-config::windows_service`
 * `winrm-config::protocol`
 * `winrm-config::client`
