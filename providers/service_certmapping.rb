@@ -19,6 +19,10 @@
 #
 use_inline_resources
 
+def whyrun_supported?
+  true
+end
+
 def load_current_resource
   winrm_data = winrm_get
   unless winrm_data.nil? || winrm_data.empty?

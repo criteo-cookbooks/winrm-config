@@ -20,6 +20,10 @@
 
 use_inline_resources
 
+def whyrun_supported?
+  true
+end
+
 action :configure do
   registry_key new_resource.key_name do
     action    :create
