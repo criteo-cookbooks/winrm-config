@@ -12,3 +12,38 @@ RSpec.configure do |config|
   config.filter_run :focus
   config.order = 'random'
 end
+
+
+def mock_shellout(cmd, stdout = '')
+  dbl = double("shellout_#{cmd}", run_command: nil, error!: false, stdout: stdout)
+
+  expect(::Mixlib::ShellOut).to receive(:new).with(cmd, anything).and_return dbl
+end
+
+
+def mock_winrm_get(is_new, uri, subject, issuer, username, enabled = true)
+  output = is_new ? '' : <<-EOS
+  CertMapping
+    URI = #{uri}
+    Subject = #{subject}
+    Issuer = #{issuer}
+    UserName = #{username}
+    Enabled = #{enabled}
+    Password
+  EOS
+  path = "winrm/config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
+  mock_shellout("winrm.cmd get #{path}", output)
+end
+
+def mock_winrm_set(is_new, uri, subject, issuer, username, password, enabled = true)
+  path = "winrm/config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
+  args = "Enabled=\"#{enabled}\";UserName=\"#{username}\";Password=\"#{password}\""
+
+  mock_shellout("winrm.cmd #{is_new ? :create : :set} #{path} @{#{args}}")
+end
+
+def mock_winrm_delete(uri, subject, issuer)
+  path = "winrm/config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
+
+  mock_shellout("winrm.cmd delete #{path}")
+end
