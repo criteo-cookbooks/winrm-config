@@ -154,7 +154,7 @@ Certificate                      | Allow the service tu use `certificate authent
 CredSSP                          | Allow the service tu use `CredSSP authentication`                        | TrueClass, FalseClass | `false`
 Kerberos                         | Allow the service to use `Kerberos authentication`                       | TrueClass, FalseClass | `true`
 Negotiate                        | Allow the service to use `Negotiate authentication`                      | TrueClass, FalseClass | `true`
-CbtHardeningLevel                | Policy for channel-binding token requirements in authentication requests | Symbol                | `:Relaxed`
+CbtHardeningLevel                | Policy for channel-binding token requirements in authentication requests | String                | `Relaxed`
 EnableCompatibilityHttpListener  | Whether to enable additional compatibility HTTP listener on port 80      | TrueClass, FalseClass | `false`
 EnableCompatibilityHttpsListener | Whether to enable additional compatibility HTTPS listener on port 443    | TrueClass, FalseClass | `false`
 EnumerationTimeoutms             | Maximum time in milliseconds to accomodate to the network delay          | String                | `5000`
