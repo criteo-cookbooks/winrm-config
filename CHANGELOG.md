@@ -2,6 +2,15 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.0 (2014-03-16)
+------------------
+- Fix winrm-config::service convergence issue
+- Fix winrm_config_listener converge issue
+- Fix type in winrm_config_listener
+- Properly implement winrm_config_service_certmapping
+- Support why_run in both service_certmapping and listener LWRP
+- Improve tests for winrm_config_listener & winrm_config_service_certmapping LWRPs
+
 0.1.0 (2014-03-10)
 ------------------
 - Initial release of winrm-config
