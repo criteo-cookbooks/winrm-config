@@ -8,6 +8,7 @@ This cookbook requires Chef 11.10.0+.
 
 ### Platforms
 This cookbook only supports the following platforms:
+
 * Windows Server 2008 (R1, R2)
 * Windows Server 2012 (R1, R2)
 
