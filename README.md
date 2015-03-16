@@ -41,9 +41,9 @@ Attribute              | Description                                            
 -----------------------|----------------------------------------------------------|-------------------------|---------
 name                   | Name of the resource                                     | String                  |
 address                | Address on which the service is configured to listen     | String                  | `*`
-certificate_thumbprint | Thumbprint of the certificate to use with HTTPS transport| String                  | `nil`
+certificate_thumbprint | Thumbprint of the certificate to use with HTTPS transport| String                  | ``
 enabled                | Whether the current listener should be enabled or not    | TrueClass, FalseClass   | `true`
-hostname               | Hostname of the server where the listener is configured  | String                  | `nil`
+hostname               | Hostname of the server where the listener is configured  | String                  | ``
 port                   | Port on which the service is configured to listen        | Fixnum                  | `5985`
 transport              | Transport used over the with WS-Management protocol      | Symbol<br/>:HTTP,:HTTPS | `:HTTP`
 url_prefix             | URL prefix on which to accept HTTP or HTTPS requests     | String                  | `wsman`
@@ -117,9 +117,9 @@ hash, following the [msdn documentation][listener_config] for each entry.
 Attribute             | Description                                              | Type                    | Default
 ----------------------|----------------------------------------------------------|-------------------------|---------
 Address               | Address on which the service is configured to listen     | String                  | `*`
-CertificateThumbprint | Thumbprint of the certificate to use with HTTPS transport| String                  | `nil`
+CertificateThumbprint | Thumbprint of the certificate to use with HTTPS transport| String                  | ``
 Enabled               | Whether the current listener should be enabled or not    | TrueClass, FalseClass   | `true`
-Hostname              | Hostname of the server where the listener is configured  | String                  | `nil`
+Hostname              | Hostname of the server where the listener is configured  | String                  | ``
 Port                  | Port on which the service is configured to listen        | Fixnum                  | `5985`
 Transport             | Transport used over the with WS-Management protocol      | Symbol<br/>:HTTP,:HTTPS | `:HTTP`
 URLPrefix             | URL prefix on which to accept HTTP or HTTPS requests     | String                  | `wsman`

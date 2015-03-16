@@ -76,9 +76,9 @@ protocol_conf['MaxBatchItems'] =                   32_000
 # Winrm listeners
 listeners = default['winrm_config']['listeners']
 listeners['HTTP']['Address'] =                     '*'
-listeners['HTTP']['CertificateThumbprint'] =       nil
+listeners['HTTP']['CertificateThumbprint'] =       ''
 listeners['HTTP']['Enabled'] =                     true
-listeners['HTTP']['Hostname'] =                    nil
+listeners['HTTP']['Hostname'] =                    ''
 listeners['HTTP']['Port'] =                        5985
 listeners['HTTP']['Transport'] =                   :HTTP
 listeners['HTTP']['URLPrefix'] =                   'wsman'

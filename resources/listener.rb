@@ -22,9 +22,9 @@ default_action :configure
 actions :configure, :delete
 
 attribute :address,                default: '*',     kind_of: String
-attribute :certificate_thumbprint, default: nil,     kind_of: String
+attribute :certificate_thumbprint, default: '',      kind_of: String
 attribute :enabled,                default: true,    kind_of: [TrueClass, FalseClass]
-attribute :hostname,               default: nil,     kind_of: String
+attribute :hostname,               default: '',      kind_of: String
 attribute :port,                   default: 5985,    kind_of: Fixnum
 attribute :transport,              default: :HTTP,   kind_of: Symbol, equal_to: [:HTTP, :HTTPS]
 attribute :url_prefix,             default: 'wsman', kind_of: String
