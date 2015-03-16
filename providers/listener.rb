@@ -25,7 +25,7 @@ action :configure do
     action    :create
     recursive true
     values [
-      { name: 'enabled',        type: :dword,  data: new_resource.enable ? 1 : 0 },
+      { name: 'enabled',        type: :dword,  data: new_resource.enabled ? 1 : 0 },
       { name: 'hostname',       type: :string, data: new_resource.hostname },
       { name: 'certThumbprint', type: :string, data: new_resource.certificate_thumbprint },
       { name: 'Port',           type: :dword,  data: new_resource.port },
