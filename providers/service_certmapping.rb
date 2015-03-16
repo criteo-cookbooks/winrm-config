@@ -20,18 +20,20 @@
 use_inline_resources
 
 def load_current_resource
-  @current_resource = Chef::Resource::WinrmConfigServiceCertmapping.new(new_resource.name, run_context)
-  @current_resource.hidrate winrm_get
+  winrm_data = winrm_get
+  unless winrm_data.nil? || winrm_data.empty?
+    @current_resource = Chef::Resource::WinrmConfigServiceCertmapping.new(new_resource.name, run_context)
+    @current_resource.hydrate winrm_data
+  end
 rescue => e
+  @current_resource = nil
   Chef::Log.warn("An error occured while retrieving certmapping: #{e.message}")
 end
 
 action :configure do
   if !exists? || attributes_changed? || password_changed?
     converge_by 'configuring WinRM service certificate mapping' do
-      action = exists? ? :Put : :Create
-      wsman_session.send action, wsman_locator, new_resource.wsman_xml.to_s
-
+      winrm_set
       encrypted_password = encrypt_password(new_resource.password)
 
       directory password_file_directory do
@@ -50,9 +52,9 @@ action :configure do
 end
 
 action :delete do
-  unless exists?
+  if exists?
     converge_by 'deleting WinRM service certificate mapping' do
-      wsman_session.Delete wsman_locator
+      winrm_delete
     end
     @new_resource.updated_by_last_action true
   end
@@ -67,7 +69,7 @@ def exists?
 end
 
 def attributes_changed?
-  [:enable, :issuer, :subject, :uri, :username].any? do |attribute|
+  [:enabled, :issuer, :subject, :uri, :username].any? do |attribute|
     @new_resource.send(attribute) != @current_resource.send(attribute)
   end
 end
@@ -102,18 +104,6 @@ def password_file
   @file ||= ::File.join(password_file_directory, password_file_name)
 end
 
-def winrm_get
-  options = { user: @new_resource.username, password: @new_resource.password }
-  cmd = ::Mixlib::ShellOut.new("winrm.cmd get #{new_resource.path}", options)
-  cmd.run_command
-  cmd.error!
-  winrm_to_hash cmd.stdout
-end
-
-def winrm_to_hash(io)
-  Hash[io.each_line.select { |l| l.include?('=') }.map { |l| l.split?('=').map(&:strip) }]
-end
-
 def runas_options
   if !node['kernel']['cs_info']['part_of_domain'] && 'SYSTEM' == node['current_user']
     { user: @new_resource.username, password: @new_resource.password }
@@ -122,8 +112,23 @@ def runas_options
   end
 end
 
-def winrm_set(action)
-  args = params.map { |k, v| "#{k}=\"#{v}\"" }.join(';')
+def winrm_delete
+  cmd = ::Mixlib::ShellOut.new("winrm.cmd delete #{new_resource.path}", runas_options)
+  cmd.run_command
+  cmd.error!
+end
+
+def winrm_get
+  cmd = ::Mixlib::ShellOut.new("winrm.cmd get #{new_resource.path}", runas_options)
+  cmd.run_command
+  cmd.error!
+
+  Hash[cmd.stdout.each_line.select { |l| l.include?('=') }.map { |l| l.split('=').map(&:strip) }]
+end
+
+def winrm_set
+  action = exists? ? :set : :create
+  args = "Enabled=\"#{new_resource.enabled}\";UserName=\"#{new_resource.username}\";Password=\"#{new_resource.password}\""
   cmd = ::Mixlib::ShellOut.new("winrm.cmd #{action} #{new_resource.path} @{#{args}}", runas_options)
   cmd.run_command
   cmd.error!

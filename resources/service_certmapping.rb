@@ -28,12 +28,11 @@ attribute :uri,      default: '*',   kind_of: String
 attribute :username, required: true, kind_of: String
 
 def path
-  @path ||= "config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
+  @path ||= "winrm/config/service/certmapping?Issuer=#{issuer}+Subject=#{subject}+URI=#{uri}"
 end
 
 def hydrate(hash)
   issuer   hash['Issuer']
-  password hash['Password']
   subject  hash['Subject']
   uri      hash['URI']
   username hash['UserName']
