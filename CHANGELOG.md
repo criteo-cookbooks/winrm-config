@@ -2,6 +2,10 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.1 (2014-03-20)
+------------------
+- Allow everyone to access certmapping password hash
+
 0.2.0 (2014-03-16)
 ------------------
 - Fix winrm-config::service convergence issue
