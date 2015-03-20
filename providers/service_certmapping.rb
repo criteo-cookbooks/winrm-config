@@ -47,8 +47,6 @@ action :configure do
       file password_file do
         backup   false
         content  encrypted_password
-        inherits false
-        rights   :full_control, 'SYSTEM'
       end
     end
     @new_resource.updated_by_last_action true
