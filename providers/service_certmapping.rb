@@ -38,7 +38,7 @@ action :configure do
   if !exists? || attributes_changed? || password_changed?
     converge_by 'configuring WinRM service certificate mapping' do
       winrm_set
-      encrypted_password = encrypt_password(new_resource.password)
+      password_hash = hash_password(new_resource.password)
 
       directory password_file_directory do
         recursive  true
@@ -46,7 +46,7 @@ action :configure do
       # store the password hash in a file to allow future comparison
       file password_file do
         backup   false
-        content  encrypted_password
+        content  password_hash
       end
     end
     @new_resource.updated_by_last_action true
@@ -81,10 +81,10 @@ def password_changed?
 
   content = ::File.read password_file
   salt = content[0..SALT_LENGTH - 1]
-  encrypt_password(@new_resource.password, salt) != content
+  hash_password(@new_resource.password, salt) != content
 end
 
-def encrypt_password(password, salt = nil)
+def hash_password(password, salt = nil)
   require 'securerandom'
   require 'digest/sha2'
 
