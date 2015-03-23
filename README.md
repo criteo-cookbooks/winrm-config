@@ -50,6 +50,9 @@ transport              | Transport used over the with WS-Management protocol    
 url_prefix             | URL prefix on which to accept HTTP or HTTPS requests     | String                  | `wsman`
 
 ## service_certmapping
+This provider allows to configure or delete a WinRM user <-> certificate mapping.
+
+**NOTE:** The user password cannot contain a double quote `"`, due to the usage of `winrm.vbs` (see [#8][quote_issue])
 
 ### Actions
 Action    | Description
@@ -221,3 +224,4 @@ limitations under the License.
 [listener_config]:    http://msdn.microsoft.com/library/aa384372#LISTENER_AND_WS-MANAGEMENT_PROTOCOL_DEFAULT_SETTINGS
 [protocol_config]:    http://msdn.microsoft.com/library/aa384372#PROTOCOL_DEFAULT_SETTINGS_
 [winrs_config]:       http://msdn.microsoft.com/library/aa384372#_WINRS_DEFAULT_CONFIGURATION_SETTINGS
+[quote_issue]:        https://github.com/criteo-cookbooks/winrm-config/issues/8
