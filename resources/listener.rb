@@ -29,6 +29,16 @@ attribute :port,                   default: 5985,    kind_of: Fixnum
 attribute :transport,              default: :HTTP,   kind_of: Symbol, equal_to: [:HTTP, :HTTPS]
 attribute :url_prefix,             default: 'wsman', kind_of: String
 
+LISTENER_KEY = 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Listener'
+
 def key_name
-  @key ||= "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\WSMAN\\Listener\\#{address}+#{transport}"
+  @key ||= "#{LISTENER_KEY}\\#{address}+#{transport}"
+end
+
+def ip
+  @ip ||= address[/^IP:(.*)$/i, 1] || '0.0.0.0'
+end
+
+def uri
+  @uri ||= "#{transport.to_s.downcase}://+:#{port}/#{url_prefix}/"
 end
