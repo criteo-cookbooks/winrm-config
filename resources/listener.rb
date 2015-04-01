@@ -26,7 +26,7 @@ attribute :certificate_thumbprint, default: '',      kind_of: String
 attribute :enabled,                default: true,    kind_of: [TrueClass, FalseClass]
 attribute :hostname,               default: '',      kind_of: String
 attribute :port,                   default: 5985,    kind_of: Fixnum
-attribute :transport,              default: :HTTP,   kind_of: Symbol, equal_to: [:HTTP, :HTTPS]
+attribute :transport,              default: :HTTP,   kind_of: [String, Symbol], equal_to: ['HTTP', 'HTTPS', :HTTP, :HTTPS]
 attribute :url_prefix,             default: 'wsman', kind_of: String
 
 LISTENER_KEY = 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Listener'
