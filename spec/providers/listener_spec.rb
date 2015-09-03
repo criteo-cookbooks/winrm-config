@@ -7,7 +7,7 @@ describe 'winrm_config_listener' do
     end
 
     before do
-      stub_command('netsh http show urlacl url=http://+:5985/wsman/').and_return true
+      stub_command('netsh http show urlacl url=http://+:5985/wsman/ | FindStr http://+:5985/wsman/').and_return true
     end
 
     it 'creates listener registry key' do

@@ -46,10 +46,10 @@ def exist?
 end
 
 def shared_url?
-  registry_get_subkeys(Chef::Resource::WinrmConfigListener.LISTENER_KEY).select do |key|
+  registry_get_subkeys(::Chef::Resource::WinrmConfigListener::LISTENER_KEY).select do |key|
     next unless key.end_with? new_resource.transport.to_s
 
-    values = registry_hash_values "#{Chef::Resource::WinrmConfigListener.LISTENER_KEY}\\#{key}"
+    values = registry_hash_values "#{Chef::Resource::WinrmConfigListener::LISTENER_KEY}\\#{key}"
     new_resource.port == values['Port'] && new_resource.url_prefix == values['uriprefix']
   end.count > 1
 end
@@ -72,29 +72,39 @@ end
 
 action :configure do
   if exist?
-    execute "Remove former URI binding #{current_resource.uri}" do
-      command "netsh http delete urlacl url=#{current_resource.uri}"
-      only_if { url_acl_changed? }
-      only_if "netsh http show urlacl url=#{current_resource.uri}"
+    windows_http_acl current_resource.uri do
+      action  :delete
+      only_if { url_acl_changed? && !shared_url? }
     end
 
-    execute "Remove former ssl certificate for #{current_resource.ip}:#{current_resource.port}" do
-      command "netsh http delete sslcert ipport=#{current_resource.ip}:#{current_resource.port}"
-      only_if { new_resource.transport == :HTTPS && ssl_binding_changed? }
-      only_if "netsh http show sslcert ipport=#{current_resource.ip}:#{current_resource.port}"
+    windows_certificate_binding "Remove former ssl certificate for #{current_resource.ip}:#{current_resource.port}" do
+      action      :delete
+      name_kind   :hash
+      cert_name   current_resource.certificate_thumbprint
+      address     current_resource.ip
+      port        current_resource.port
+      app_id      WINRM_APPID
+      only_if { current_resource.transport == :HTTPS && ssl_binding_changed? }
     end
   end
 
+  # windows_http_acl does not handle SDDL
   execute "Bind listener to winrm URI (url=#{new_resource.uri} SDDL=#{WINRM_SDDL})" do
-    command "netsh http add urlacl url=#{new_resource.uri} SDDL=#{WINRM_SDDL}"
-    only_if { !exist? || url_acl_changed? }
-    not_if "netsh http show urlacl url=#{new_resource.uri}"
+    command <<-EOS
+netsh http delete urlacl url=#{new_resource.uri}
+netsh http add urlacl url=#{new_resource.uri} SDDL=#{WINRM_SDDL}
+    EOS
+    not_if "netsh http show urlacl url=#{new_resource.uri} | FindStr #{new_resource.uri}"
   end
 
-  execute "Bind ssl certificate to winrm listener #{new_resource.ip}:#{new_resource.port}" do
-    command "netsh http add sslcert ipport=#{new_resource.ip}:#{new_resource.port} certhash=#{new_resource.certificate_thumbprint} appid=#{WINRM_APPID}"
-    only_if { new_resource.transport == :HTTPS &&  (!exist? || ssl_binding_changed?) }
-    not_if "netsh http show sslcert ipport=#{new_resource.ip}:#{new_resource.port}"
+  windows_certificate_binding "Bind ssl certificate to winrm listener #{new_resource.ip}:#{new_resource.port}" do
+    action      :create
+    name_kind   :hash
+    cert_name   new_resource.certificate_thumbprint
+    address     new_resource.ip
+    port        new_resource.port
+    app_id      WINRM_APPID
+    only_if { new_resource.transport == :HTTPS }
   end
 
   registry_key new_resource.key_name do
@@ -112,16 +122,16 @@ end
 
 action :delete do
   if exist?
-    execute "Remove URI binding #{new_resource.uri}" do
-      command "netsh http delete urlacl url=#{new_resource.uri}"
+    windows_http_acl new_resource.uri do
+      action  :delete
       not_if { shared_url? }
-      only_if "netsh http show urlacl url=#{new_resource.uri}"
     end
 
-    execute "Remove ssl certificate for #{new_resource.ip}:#{new_resource.port}" do
-      command "netsh http delete sslcert ipport=#{new_resource.ip}:#{new_resource.port}"
+    windows_certificate_binding "Remove ssl certificate for #{new_resource.ip}:#{new_resource.port}" do
+      action      :delete
+      address     new_resource.ip
+      port        new_resource.port
       only_if { new_resource.transport == :HTTPS }
-      only_if "netsh http show sslcert ipport=#{new_resource.ip}:#{new_resource.port}"
     end
   end
 
