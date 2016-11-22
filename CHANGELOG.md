@@ -2,6 +2,10 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.4 (2016-11-22)
+------------------
+- Unlock constraint on windows cookbook
+
 0.2.3 (2015-11-20)
 ------------------
 - Leverage windows LWRPs for sslcert and urlacl
