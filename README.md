@@ -1,5 +1,8 @@
 WinRM-config Cookbook
 =====================
+[![Cookbook Version][cookbook_version]][cookbook]
+[![Build Status][build_status]][build_status]
+
 Configure WinRM service and client.
 
 Requirements
@@ -219,6 +222,8 @@ limitations under the License.
 
 [author]:             https://github.com/Annih
 [repository]:         https://github.com/criteo-cookbooks/winrm-config
+[build_status]:       https://api.travis-ci.org/criteo-cookbooks/winrm-config.svg?branch=master
+[cookbook_version]:   https://img.shields.io/cookbook/v/winrm-config.svg
 [client_config]:      http://msdn.microsoft.com/library/aa384372#WINRM_CLIENT_DEFAULT_CONFIGURATION_SETTINGS
 [service_config]:     http://msdn.microsoft.com/library/aa384372#WINRM_SERVICE_DEFAULT_CONFIGURATION_SETTINGS
 [listener_config]:    http://msdn.microsoft.com/library/aa384372#LISTENER_AND_WS-MANAGEMENT_PROTOCOL_DEFAULT_SETTINGS
