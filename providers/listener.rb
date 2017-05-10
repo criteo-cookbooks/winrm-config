@@ -88,13 +88,8 @@ action :configure do
     end
   end
 
-  # windows_http_acl does not handle SDDL
-  execute "Bind listener to winrm URI (url=#{new_resource.uri} SDDL=#{WINRM_SDDL})" do
-    command <<-EOS
-netsh http delete urlacl url=#{new_resource.uri}
-netsh http add urlacl url=#{new_resource.uri} SDDL=#{WINRM_SDDL}
-    EOS
-    not_if "netsh http show urlacl url=#{new_resource.uri} | FindStr #{new_resource.uri}"
+  windows_http_acl new_resource.uri do
+    sddl WINRM_SDDL
   end
 
   windows_certificate_binding "Bind ssl certificate to winrm listener #{new_resource.ip}:#{new_resource.port}" do
