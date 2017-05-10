@@ -7,7 +7,7 @@ Configure WinRM service and client.
 
 Requirements
 ------------
-This cookbook requires Chef 11.10.0+.
+This cookbook requires Chef 12.1+ and the windows cookbook v2.10.
 
 ### Platforms
 This cookbook only supports the following platforms:

@@ -6,4 +6,5 @@ description      'Configures winrm service and client'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
 version          '0.2.4'
 supports         'windows', '>= 6.0'
-depends          'windows', '>= 1.38'
+depends          'windows', '>= 2.1'
+chef_version     '>= 12.1' if respond_to?(:chef_version)
