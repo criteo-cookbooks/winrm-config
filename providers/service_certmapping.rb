@@ -49,7 +49,6 @@ action :configure do
         content  password_hash
       end
     end
-    @new_resource.updated_by_last_action true
   end
 end
 
@@ -58,7 +57,6 @@ action :delete do
     converge_by 'deleting WinRM service certificate mapping' do
       winrm_delete
     end
-    @new_resource.updated_by_last_action true
   end
 end
 
