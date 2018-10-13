@@ -20,7 +20,7 @@
 
 return unless platform? 'windows'
 
-service 'WinRM' do
+windows_service 'WinRM' do
   run_as_user 'NT AUTHORITY\NetworkService'
   action [:enable, :start]
 end
