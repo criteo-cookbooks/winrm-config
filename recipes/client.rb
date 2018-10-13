@@ -40,5 +40,5 @@ registry_key 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Client' do
     { name: 'trusted_hosts',      type: :string, data: client_conf['TrustedHosts'] },
     { name: 'url_prefix',         type: :string, data: client_conf['URLPrefix'] },
   ]
-  notifies :restart, 'service[WinRM]', :delayed
+  notifies :restart, 'windows_service[WinRM]', :delayed
 end

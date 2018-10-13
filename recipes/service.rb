@@ -44,5 +44,5 @@ registry_key 'HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\WSMAN\Service' do
     { name: 'maxPacketRetrievalTime',         type: :dword,  data: service_conf['MaxPacketRetrievalTimeSeconds'] },
     { name: 'rootSDDL',                       type: :string, data: service_conf['RootSDDL'] },
   ]
-  notifies :restart, 'service[WinRM]', :delayed
+  notifies :restart, 'windows_service[WinRM]', :delayed
 end

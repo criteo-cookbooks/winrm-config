@@ -32,6 +32,6 @@ node['winrm_config']['listeners'].each do |key, conf|
     port                       conf['Port']
     transport                  conf['Transport']
     url_prefix                 conf['URLPrefix']
-    notifies :restart, 'service[WinRM]', :delayed
+    notifies :restart, 'windows_service[WinRM]', :delayed
   end
 end
