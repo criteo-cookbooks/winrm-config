@@ -29,7 +29,7 @@ depends 'winrm-config'
 Then include the recipes you want, or use one the LWRP provided.
 The default recipe, should setup a working WinRM environment.
 
-Providers & Resources
+Resources
 ---------------------
 
 ## listener
@@ -40,8 +40,8 @@ Action    | Description
 configure | Create or update the specified WinRM listener
 delete    | Delete the specified WinRM listener if it exists
 
-### Attributes
-Attribute              | Description                                              | Type                    | Default
+### Properties
+Property               | Description                                              | Type                    | Default
 -----------------------|----------------------------------------------------------|-------------------------|---------
 name                   | Name of the resource                                     | String                  |
 address                | Address on which the service is configured to listen     | String                  | `*`
@@ -63,8 +63,8 @@ Action    | Description
 configure | Create or update the specified WinRM certificate mapping
 delete    | Delete the specified WinRM certificate mapping if it exists
 
-### Attributes
-Attribute | Description                                               | Type                  | Default
+### Properties
+Property  | Description                                               | Type                  | Default
 ----------|-----------------------------------------------------------|-----------------------|---------
 name      | Name of the resource                                      | String                |
 enabled   | Whether the current certificate mapping is enabled or not | TrueClass, FalseClass | `true`
