@@ -21,6 +21,6 @@
 return unless platform? 'windows'
 
 windows_service 'WinRM' do
-  run_as_user 'NT AUTHORITY\NetworkService'
+  run_as_user 'NT AUTHORITY\NetworkService' if ::Chef::VERSION.to_f >= 13.0
   action [:enable, :start]
 end
