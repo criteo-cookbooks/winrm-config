@@ -29,7 +29,7 @@ end
 def load_current_resource
   return unless registry_key_exists? new_resource.key_name
 
-  @current_resource = Chef::Resource::WinrmConfigListener.new(new_resource.name, run_context)
+  @current_resource = ::Chef::Resource::resource_for_node(:winrm_config_listener, node).new(new_resource.name, run_context)
   @current_resource.address new_resource.address
   @current_resource.transport new_resource.transport
 

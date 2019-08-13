@@ -26,7 +26,7 @@ end
 def load_current_resource
   winrm_data = winrm_get
   unless winrm_data.nil? || winrm_data.empty?
-    @current_resource = Chef::Resource::WinrmConfigServiceCertmapping.new(new_resource.name, run_context)
+    @current_resource = ::Chef::Resource.resource_for(:winrm_config_service_certmapping, node).new(new_resource.name, run_context)
     @current_resource.hydrate winrm_data
   end
 rescue => e
