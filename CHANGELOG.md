@@ -2,6 +2,11 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.6 (2019-08-27)
+------------------
+- Fix compatibility with various Chef version (12+)
+- Migrate LWRP to custom resources
+
 0.2.5 (2018-10-24)
 ------------------
 - Make default recipe compatible with Chef 13+ (Thanks Jugatsu)
