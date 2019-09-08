@@ -43,7 +43,8 @@ end
 
 action :configure do
   if exist?
-    windows_http_acl current_resource.uri do
+    windows_http_acl "former URL acl" do
+      url current_resource.uri
       action  :delete
       only_if { url_acl_changed? && !new_resource.shared_url? }
     end
