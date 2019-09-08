@@ -2,6 +2,10 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.7 (2019-09-08)
+------------------
+- Fix winrm_config_listner resources names
+
 0.2.6 (2019-08-27)
 ------------------
 - Fix compatibility with various Chef version (12+)
