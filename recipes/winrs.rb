@@ -35,5 +35,5 @@ registry_key 'Setting up winrs' do
     { name: 'MaxMemoryPerShellMB',    type: :dword, data: winrs_conf['MaxMemoryPerShellMB'] },
     { name: 'MaxShellsPerUser',       type: :dword, data: winrs_conf['MaxShellsPerUser'] },
   ]
-  notifies :restart, 'windows_service[WinRM]', :delayed
+  notifies :restart, 'windows_service[WinRM]', :delayed if node['winrm_config']['restart_winrm_on_change']
 end
