@@ -32,5 +32,5 @@ registry_key 'Setting up winrm protocol' do
     { name: 'timeout',        type: :dword, data: protocol_conf['MaxTimeoutms'] },
     { name: 'batch_maxItems', type: :dword, data: protocol_conf['MaxBatchItems'] },
   ]
-  notifies :restart, 'windows_service[WinRM]', :delayed
+  notifies :restart, 'windows_service[WinRM]', :delayed if node['winrm_config']['restart_winrm_on_change']
 end
