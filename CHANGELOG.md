@@ -2,6 +2,10 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.8 (2019-09-09)
+------------------
+- Allow to disable automatic restart of winrm service on configuration change.
+
 0.2.7 (2019-09-08)
 ------------------
 - Fix winrm_config_listner resources names
