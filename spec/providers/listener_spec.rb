@@ -20,6 +20,9 @@ describe 'winrm_config_listener' do
 
     before do
       stub_command('netsh http show urlacl url=http://+:5985/wsman/ | FindStr http://+:5985/wsman/').and_return true
+      stubs_for_provider("winrm_config_listener[configure_listener]") do |provider|
+        allow(provider).to receive_shell_out("netsh.exe http show urlacl url=HTTP://+:5985/wsman/")
+      end
     end
 
     it 'creates listener registry key' do
