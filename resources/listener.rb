@@ -29,6 +29,7 @@ property :url_prefix,             String,                  default: 'wsman'
 provides :winrm_config_listener
 
 include ::WinrmConfig::ListenerHelpers
+include ::Windows::Helper
 
 load_current_value do
   current_value_does_not_exist! unless registry_key_exists? key_name
@@ -43,7 +44,7 @@ end
 
 action :configure do
   if exist?
-    windows_http_acl "former URL acl" do
+    windows_http_acl 'former URL acl' do
       url current_resource.uri
       action  :delete
       only_if { url_acl_changed? && !new_resource.shared_url? }
@@ -62,6 +63,7 @@ action :configure do
 
   windows_http_acl new_resource.uri do
     sddl WINRM_SDDL
+    only_if { http_acl_changed? }
   end
 
   windows_certificate_binding "Bind ssl certificate to winrm listener #{new_resource.ip}:#{new_resource.port}" do
@@ -108,11 +110,22 @@ action :delete do
 end
 
 action_class do
-  WINRM_APPID = '{afebb9ad-9b97-4a91-9ab5-daf4d59122f6}'.freeze
-  WINRM_SDDL = 'D:(A;;GX;;;S-1-5-80-569256582-2953403351-2909559716-1301513147-412116970)(A;;GX;;;S-1-5-80-4059739203-877974739-1245631912-527174227-2996563517)'.freeze
+  WINRM_APPID = '{afebb9ad-9b97-4a91-9ab5-daf4d59122f6}'
+  WINRM_SDDL = 'D:(A;;GX;;;S-1-5-80-569256582-2953403351-2909559716-1301513147-412116970)(A;;GX;;;S-1-5-80-4059739203-877974739-1245631912-527174227-2996563517)'
 
   def exist?
     !current_resource.nil?
+  end
+
+  def http_acl_changed?
+    cmd_out = shell_out!("#{locate_sysnative_cmd('netsh.exe')} http show urlacl url=#{new_resource.uri}").stdout
+    Chef::Log.debug "netsh reports: #{cmd_out}"
+
+    if cmd_out.include? new_resource.uri
+      sddl_match = cmd_out.match(/SDDL:\s*(?<sddl>\S+)/)
+      return false if sddl_match && sddl_match['sddl'] == WINRM_SDDL
+    end
+    true
   end
 
   def url_acl_changed?
