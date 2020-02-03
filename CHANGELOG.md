@@ -2,6 +2,10 @@ WinRM-config CHANGELOG
 ======================
 This file is used to list changes made in each version of the winrm-config cookbook.
 
+0.2.9 (2020-02-03)
+------------------
+- Backport a fix for windows_http_acl idempotency for older versions for Chef
+
 0.2.8 (2019-09-09)
 ------------------
 - Allow to disable automatic restart of winrm service on configuration change.
