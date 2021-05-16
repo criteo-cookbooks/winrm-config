@@ -13,13 +13,11 @@ RSpec.configure do |config|
   config.order = 'random'
 end
 
-
 def mock_shellout(cmd, stdout = '')
   dbl = double("shellout_#{cmd}", run_command: nil, error!: false, stdout: stdout)
 
   expect(::Mixlib::ShellOut).to receive(:new).with(cmd, anything).and_return dbl
 end
-
 
 def mock_winrm_get(is_new, uri, subject, issuer, username, enabled = true)
   output = is_new ? '' : <<-EOS
