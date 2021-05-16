@@ -1,6 +1,6 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
-# Cookbook Name:: winrm-config
+# Cookbook:: winrm-config
 # Resource:: listener
 #
 # Copyright:: Copyright (c) 2015 Criteo.
@@ -19,9 +19,9 @@
 #
 
 property :address,                String,                  default: '*',    identity: true
-property :transport,              %w[HTTP HTTPS],          default: 'http', identity: true, coerce: proc { |x| x.to_s.upcase }
+property :transport,              %w(HTTP HTTPS),          default: 'http', identity: true, coerce: proc { |x| x.to_s.upcase }
 property :certificate_thumbprint, [String, nil],           default: ''
-property :enabled,                [TrueClass, FalseClass], default: true
+property :enabled,                [true, false], default: true
 property :hostname,               String,                  default: ''
 property :port,                   Integer,                 default: 5985
 property :url_prefix,             String,                  default: 'wsman'
@@ -84,7 +84,7 @@ action :configure do
       { name: 'hostname',       type: :string, data: new_resource.hostname },
       { name: 'certThumbprint', type: :string, data: new_resource.certificate_thumbprint },
       { name: 'Port',           type: :dword,  data: new_resource.port },
-      { name: 'uriprefix',      type: :string, data: new_resource.url_prefix }
+      { name: 'uriprefix',      type: :string, data: new_resource.url_prefix },
     ]
   end
 end
@@ -110,8 +110,8 @@ action :delete do
 end
 
 action_class do
-  WINRM_APPID = '{afebb9ad-9b97-4a91-9ab5-daf4d59122f6}'
-  WINRM_SDDL = 'D:(A;;GX;;;S-1-5-80-569256582-2953403351-2909559716-1301513147-412116970)(A;;GX;;;S-1-5-80-4059739203-877974739-1245631912-527174227-2996563517)'
+  WINRM_APPID = '{afebb9ad-9b97-4a91-9ab5-daf4d59122f6}'.freeze
+  WINRM_SDDL = 'D:(A;;GX;;;S-1-5-80-569256582-2953403351-2909559716-1301513147-412116970)(A;;GX;;;S-1-5-80-4059739203-877974739-1245631912-527174227-2996563517)'.freeze
 
   def exist?
     !current_resource.nil?
@@ -129,22 +129,18 @@ action_class do
   end
 
   def url_acl_changed?
-    %i[address port].any? do |attribute|
+    %i(address port).any? do |attribute|
       new_resource.send(attribute) != current_resource.send(attribute)
     end
   end
 
   def ssl_binding_changed?
-    %i[certificate_thumbprint address port].any? do |attribute|
+    %i(certificate_thumbprint address port).any? do |attribute|
       new_resource.send(attribute) != current_resource.send(attribute)
     end
   end
 
   def https?
     new_resource.transport == 'HTTPS'
-  end
-
-  def whyrun_supported?
-    true
   end
 end

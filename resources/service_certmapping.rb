@@ -1,6 +1,6 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
-# Cookbook Name:: winrm-config
+# Cookbook:: winrm-config
 # Resource:: service_certmapping
 #
 # Copyright:: Copyright (c) 2015 Criteo.
@@ -18,7 +18,7 @@
 # limitations under the License.
 #
 
-property :enabled,  [TrueClass, FalseClass], default: true
+property :enabled,  [true, false], default: true
 property :issuer,   String, required: true, identity: true
 property :password, String, required: true
 property :subject,  String, default: '*', identity: true
@@ -73,7 +73,7 @@ action_class do
   end
 
   def attributes_changed?
-    %i[enabled issuer subject uri username].any? do |attribute|
+    %i(enabled issuer subject uri username).any? do |attribute|
       new_resource.send(attribute) != current_resource.send(attribute)
     end
   end
@@ -106,9 +106,5 @@ action_class do
 
   def password_file
     @password_file ||= ::File.join(password_file_directory, password_file_name)
-  end
-
-  def whyrun_supported?
-    true
   end
 end

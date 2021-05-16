@@ -13,15 +13,14 @@ describe 'winrm_config_listener' do
   end
 
   describe 'action create' do
-
     let(:chef_run) do
       ChefSpec::SoloRunner.new(step_into: ['winrm_config_listener']).converge('winrm-config-test::configure_listener')
     end
 
     before do
       stub_command('netsh http show urlacl url=http://+:5985/wsman/ | FindStr http://+:5985/wsman/').and_return true
-      stubs_for_provider("winrm_config_listener[configure_listener]") do |provider|
-        allow(provider).to receive_shell_out("netsh.exe http show urlacl url=HTTP://+:5985/wsman/")
+      stubs_for_provider('winrm_config_listener[configure_listener]') do |provider|
+        allow(provider).to receive_shell_out('netsh.exe http show urlacl url=HTTP://+:5985/wsman/')
       end
     end
 
@@ -32,7 +31,6 @@ describe 'winrm_config_listener' do
   end
 
   describe 'action delete' do
-
     let(:chef_run) do
       ChefSpec::SoloRunner.new(step_into: ['winrm_config_listener']).converge('winrm-config-test::delete_listener')
     end

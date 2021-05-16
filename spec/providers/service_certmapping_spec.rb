@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 describe 'winrm_config_service_certmapping' do
-
   describe 'create action' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(step_into: ['winrm_config_service_certmapping']) do |node|

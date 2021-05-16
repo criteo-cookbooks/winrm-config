@@ -1,6 +1,6 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
-# Cookbook Name:: winrm-config
+# Cookbook:: winrm-config
 # Attribute:: default
 #
 # Copyright:: Copyright (c) 2015 Criteo.
@@ -21,7 +21,7 @@
 return unless platform? 'windows'
 
 # Allow to configure automatic restart of the winrm service on configuration change
-default['winrm_config']['restart_winrm_on_change']  = true
+default['winrm_config']['restart_winrm_on_change'] = true
 
 # Below attributes follow the msdn default values
 # see https://msdn.microsoft.com/library/aa384372

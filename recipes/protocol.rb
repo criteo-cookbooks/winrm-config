@@ -1,6 +1,6 @@
 #
 # Author:: Baptiste Courtois (<b.courtois@criteo.com>)
-# Cookbook Name:: winrm-config
+# Cookbook:: winrm-config
 # Recipe:: protocol
 #
 # Copyright:: Copyright (c) 2015 Criteo.
